@@ -1,0 +1,87 @@
+
+			-*- html -*-
+
+	ErlGuten overview page
+
+@title ErlGuten - a typesetting system for producing PDF from XML
+
+@author Joe Armstrong
+@author Mikael Karlsson
+@author Johan Bevemyr
+@author Sean Hinde
+@author Håkan Stenholm
+@copyright 2003-2010 Joe Armstrong, Mikael Karlsson, Johan Bevemyr,
+Sean Hinde, Håkan Stenholm
+@version {@version}
+
+@doc ErlGuten is a typesetting system for producing PDF from XML.
+
+Erlguten is free software published under the MIT license.
+
+The word ErlGuten is built from <a href="http://www.erlang.org/">Erlang</a>
+plus <a href="http://www.gutenberg.de/english/index.htm">Gutenberg</a>.
+
+The goal of ErlGuten is to produce <i>typographic quality</i> output - this
+means that we aim at the highest quality possible for the typeset text. The
+ErlGuten text justification algorithms produce paragraph-optimized text with
+fully kerned data, normally the production of such text cannot be done by
+everyday word-processing programs but requires the use of dedicated
+typesetting programs.
+
+== Gallery ==
+
+Here you can see the inputs to ErlGuten and the corresponding output.
+
+<center>
+<table border="1">
+<tr>
+<td><b>Inputs</b></td><td>Output</td>
+</tr>
+<tr>
+<td><a href="../test/test1.xml">test1.xml</a> <br/>
+<a href="../test/galley_001.gal">galley_001.gal</a></td>
+<td valign="top"><a href="../test/test1.pdf">test1.pdf</a></td>
+</tr>
+<tr>
+<td><a href="../test/eg_test1.erl">eg_test1.erl</a></td>
+<td><a href="../test/eg_test1.pdf">eg_test1.pdf</a></td>
+</tr>
+<tr>
+<td><a href="../test/eg_test4.erl">eg_test4.erl</a></td>
+<td><a href="../test/eg_test4.pdf">eg_test4.pdf</a></td>
+</tr>
+
+</table>
+</center>
+
+
+== Download ==
+
+The transformation software is written in Erlang. To run the system you will
+need to install Erlang, which is available from <a
+href="http://www.erlang.org/">www.erlang.org</a>.
+
+=== Release information ===
+
+This is release 2.5 of ErlGuten. Following release 2.1, it has been
+maintained for the last years at Klarna AB (formerly Kreditor). It is now
+published under the MIT license, with permission from all the authors.
+The previous release (2.1) can be found at 
+[http://www.sics.se/~joe/erlguten-2.1/erlguten.html].
+
+=== Future releases ===
+
+Future releases of ErlGuten will need to address the following problems:
+
+<ul> 
+<li>Font embedding - so far we can only use the PDF embedded type 1
+postscript fonts - I'd like to extend this to cover all type 1 postscript
+fonts, together with truetype fonts.</li>
+<li>A content management system for the production of digital
+newspapers.</li>
+<li>Plug-ins. I want to make a plug in architecture - so effects like
+drop-paragraphs etc. will all be implemented through a standard plug-in
+interface.</li>
+<li>Viewers - I'd like to connect ErlGuten to the freetype project and make
+a GUI with the same interface as provided by the <i>eg_pdf</i> module.</li>
+</ul>

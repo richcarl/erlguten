@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<galley>
+  <box name = "header" x="200" y="800" measure="15" 
+	grid="false" bg="default"
+       fontSize="32/32" lines="1" continue="none">
+    <obj name="p" paraIndent="0">
+      <tag name="raw"  font="Times-Roman"  break="true"/>
+    </obj>
+  </box>
+  <box name = "flow_001" x="100" y="750" measure="30" 
+       grid="false" bg="default"
+       fontSize="11/13" lines="40" continue="flow_001">
+    <obj name="p" paraIndent="1,0">
+      <tag name="m"  font="ZapfChancery-MediumItalic"  break="true"/>
+      <tag name="raw"  font="NewCenturySchlbk-Roman"  break="true"/>
+      <tag name="em"   font="NewCenturySchlbk-Italic" break="true"/>
+      <tag name="code" font="Courier"      break="false"/>
+    </obj>
+  </box>
+  <box name = "footnote" x="100" y="200" measure="30" 
+       grid="false" bg="default"
+       fontSize="6/8" lines="2" continue="none">
+    <obj name="p" paraIndent="0">
+      <tag name="raw"  font="Times-Italic"  break="true"/>
+    </obj>
+  </box>
+</galley>

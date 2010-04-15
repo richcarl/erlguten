@@ -1,0 +1,2 @@
+#!/bin/sh
+erl -pa ../ebin -pa `pwd` -s erlguten batch $1 -s erlang halt

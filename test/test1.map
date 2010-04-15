@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<map template="template1:one">
+
+<!-- all the tags here body, header, intro, etc. are defined in
+     template_001.gal
+     These redefine the meaning of <p> .. etc.
+     and define the geometry of the page
+-->
+
+<body data="content1:erlguten_introduction"/>
+
+<header>
+<p>ErlGuten</p>"
+</header>
+
+<intro>
+<p>Using Erlang in typography applications</p>"
+</intro>
+
+<punch>
+<p>INTRODUCTION</p>"
+</punch>
+
+<footnote>
+<p>This is a small footnote set in 8/10 Times Italic</p>"
+</footnote>
+
+</map>
+
+
+
+

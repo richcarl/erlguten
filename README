@@ -1,0 +1,8 @@
+1) Install with make
+
+2) try the command
+
+   ./erlguten test1.xml
+
+   This produces test1.pdf
+

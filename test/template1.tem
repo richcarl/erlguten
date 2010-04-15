@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!-- this is a template file it can hold many different templates -->
+
+<templates>
+<template name="one" handler="plugin1" >
+
+    <box name = "h" x="100" y="760" width="150" leading="15" lines="1"
+ 	next="none"/>	
+
+    <box name = "body"  x="100" y="700" width="500" leading="12" 
+	lines="24" nextPage="0" nextTag="body1" />
+
+    <box name = "body1" x="600" y="700" width="500" leading="12" lines="24"
+	nextPage="1" nextTag="body"/>
+
+    <tag name="h"  font="Times-Roman"  size="15"/>
+    <tag name="body" font="Times-Roman" size="11" />
+    <tag name="body.code" font="Courier" size="11" break="false"/>
+    <tag name="body.em" font="Times-Italic" size="11" break="false"/>
+</template>
+</templates>
+
+
+
+
+
+
+
