@@ -263,7 +263,7 @@ get_font_program(Handler) ->
     P = eg_embed:parse_pfb(File),
     case P of
 	[{_,L1,B1},{_,L2,B2},{_,L3,B3}|_] ->
-	    {L1+L2+L3,L1,L2,L3,concat_binary([B1,B2,B3])};
+	    {L1+L2+L3,L1,L2,L3,list_to_binary([B1,B2,B3])};
 	_ ->
 	    error
     end.
