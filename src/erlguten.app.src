@@ -1,0 +1,8 @@
+%% -*- mode: Erlang; fill-column: 75; comment-column: 50; -*-
+
+{application, erlguten,
+ [{description, "System for high-quality typesetting"},
+  {vsn, "2.5"},
+  {modules, []},
+  {registered, []},
+  {applications, [kernel, stdlib]}]}.
