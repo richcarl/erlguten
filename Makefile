@@ -7,7 +7,7 @@ include vsn.mk
 
 .PHONY: all conf test $(SUBDIRS)
 
-all: conf $(SUBDIRS) test docs
+all: conf $(SUBDIRS)
 
 conf test:
 	cd $@ && $(MAKE)
