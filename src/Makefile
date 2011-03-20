@@ -8,7 +8,7 @@ ERL_OBJECTS += ../ebin/eg_hyphen_rules.beam \
 ../ebin/eg_hyphen_rules_nb_NO.beam \
 ../ebin/eg_hyphen_rules_sv_SE.beam
 
-all: $(ERL_OBJECTS) fontmap
+all: $(ERL_OBJECTS) $(APP_OBJECTS) fontmap
 
 # .dic file got updated so recreate the matching eg_hyphen_rules_*.erl file
 # by calling eg_mk_hyphen:start/1

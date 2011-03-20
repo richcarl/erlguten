@@ -2,7 +2,7 @@
 
 {application, erlguten,
  [{description, "System for high-quality typesetting"},
-  {vsn, "2.5"},
-  {modules, []},
+  {vsn, "%VSN%"},
+  {modules, [%MODULES%]},
   {registered, []},
   {applications, [kernel, stdlib]}]}.

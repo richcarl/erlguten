@@ -1,9 +1,8 @@
-SUBDIRS=src priv/src
-APPNAME=erlguten
-DOC_OPTS={def,{version,\"$(EG_VSN)\"}}
-ERL=erl
-
 include vsn.mk
+APPNAME=erlguten
+SUBDIRS=src priv/src
+DOC_OPTS={def,{version,\"$(VSN)\"}}
+ERL=erl
 
 .PHONY: all conf test $(SUBDIRS)
 
@@ -13,7 +12,7 @@ conf test:
 	cd $@ && $(MAKE)
 
 $(SUBDIRS):
-	cd $@ && $(MAKE)
+	cd $@ && $(MAKE) VSN=$(VSN)
 
 docs: doc/index.html
 
