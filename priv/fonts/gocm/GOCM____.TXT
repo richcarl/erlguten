@@ -1,0 +1,131 @@
+Installation notes for PC users:
+
+Don't forget to make the WIN.INI changes required to allow the font to
+download to your printer.
+
+Included in this archive are two versions of GoodCityModern: the first one
+uses Adobe Standard Encoding, meaning that many of the odd characters in the
+'upper 128' of the ASCII sequence will appear in the places that PC
+keyboarders expect them to be. The second version uses sequential encoding (as
+did the original upload of the PC version of GoodCityModern). Sequential
+encoding means that a lot more characters will be available for typing from
+the PC keyboard, but they will not be in the positions that PC keyboarders
+expect them to be.
+
+You will need to make a choice between the GOCMASE_.* font and the GOCMSEQ_.*
+font. The first is Adobe Standard Encoded (characters where PC expects them
+but fewer characters available), the second is Sequential Encoded (all the
+characters available, but they're in different positions than PCs expect
+them). DO NOT INSTALL BOTH VERSIONS AT ONCE OR YOU WILL HAVE PROBLEMS.
+
+Also, both these versions have been run through the FOGFIX program, to make
+sure none of the anomalies that can be caused by having nulls or upper ASCII
+in the .PFB file will ever show up.
+
+
+Welcome to GoodCityModern,
+
+GoodCityModern 1.1 Read Me
+
+Thank all of you for downloading my font. I never in my wildest dreams would
+think so many people wanted this obscure, yet historical, font. To date, well
+over 3500 people have retrieved or received GoodCityModern. I have received
+letters, cards, and phone calls from all over the world. I am pleased that you
+are pleased.
+
+Ah, like software development, there is always the needed 1.1 after the first
+version ships. Quite a lot has happened to GCM (GoodCityModern): lots of
+tweaking of path points; corrected accented characters; improved some
+character widths; a few new characters added. Enough about the software.
+
+Since GCM's 1.0 release, I have been busy reading about Latin grammar. I
+learned several things. The original kerned pairs that Gutenberg created (po,
+pe, pp, etc...) are actually special abbreviations for Latin prefixes,
+suffixes, and phrases. He attempted to carry over the medieval scribe's style
+of spelling and 'shorthand' for fitting long words at the end of lines.
+
+Some have complained that the spacing for GCM is uneven or too tight. Go look
+at a Gutenberg Bible reproduction and see for yourself. It's far easier to
+unkern a few pairs to one's liking than try to know which pairs should be
+kerned. Until Apple releases the Line Layout Manager, there is no smart way to
+duplicate how Gutenberg typeset his 42 line Bible.
+
+The main new 'feature' of this version is a set of Lombardic caps to be used
+as initial caps with GCM. The original caps will be another font down the way.
+
+Remember: Blessed is one who teaches another to scribe the Letters. Shalom.
+
+------------------------
+ GoodCityModern 1.0 Read Me
+
+Naturally, you may be asking yourself, 'How did he create this font?' It
+started late one night, restless... Glancing through some type books, I
+stopped upon a reproduction of the Gutenberg typeface; thought, that would be
+a great typeface to do in Fontographer. Thinking further, perhaps several
+weeks in the library and several more at my Mac with Fontographer 3.0 and I
+would be done. Hmm, things do not happen quite that way. Murphy's law was
+determined to be bothersome. There were only fragments of pages to go by... My
+Mac and scanner broke, requiring costly repairs. However, while visiting my
+parents (near C.W. Post Campus of Long Island University in Brookville, New
+York), I found a full character set to copy at the college library. Work could
+commence.
+
+The reproduction was small and the copier worse, but I managed. Studying the
+page, I quickly realized several key points. One: Gutenberg designed the font
+with a deep understanding of Latin grammar and spelling. He had kerning pairs
+based on repeated letter usage throughout the Bible and kerned small words
+into tight units (i.e., "our," "of," and "and"). Second: That he posited key
+geometric guidelines to aid in creating the font. He was doing more than just
+capturing the scribe-like strokes of his day, but in addition had a respect
+for the metal and ink to be used in printing his Bible. This second point made
+it possible to actually create the font; because of the smallness of the
+reproduced letters, I had to re-create (for techies, 'reverse-engineer') them.
+My loupe and the page became very close friends!
+
+After some hand drawings to 'feel' the letter forms, I scanned the page at 150
+dpi and made a bitmap font using Fontastic Plus(tm). Sometimes, I felt another
+hand on my mouse while fat-bitting away late at night... Then, I typed Latin
+text into Fontastic Plus' sample text edit window to see the typeface in
+actual context. Next, using the bitmap font, a PostScript printer, and Apple's
+print driver, I printed a page of characters at 200% enlargement with the
+option 'smoothing' (to partly smooth out the jaggies) checked from Apple's
+print driver. Thus, one could scale and smooth out a bitmap font -- without
+fatbitting a lot. Finally, I cleaned up the scan in MacPaint(R).
+
+I did preliminary versions in Fontographer 3.0.5 thru 3.1. As the in-house
+tester for FreeHand 3.0, I was naturally thinking mostly in terms of FreeHand,
+constantly experimenting with new ways to use it. At one point, I wondered
+"how much of my font could I do in FreeHand?" So, I placed the scanned image
+into FreeHand 3.0 to trace and refine -- using all its new features to
+accomplish the task. For example, while Fontographer has layers, I preferred
+the naming and ordering of the layers palette that FreeHand offered. Yes, bcp
+by bcp, the font came alive. There were days I felt a presence in the room...
+
+Once the character paths were done, I simply option-copied them from FreeHand
+into Fontographer 3.2. Once paths are in Fontographer, one can create the
+needed ligatures. Finally, after upgrading from Fontographer 3.2 to 3.3, I
+created kerning pairs. Based on the same careful study Gutenberg did on Latin
+letters, I needed to create 800 pairs! Now as of 5:15 pm, June 18, 1991, using
+Fontographer 3.3, I was finished.
+
+A few historical notes. The original typeface was created for Latin, not for
+modern English; hence, the 'modern' in the name of my translation. I had to
+create a full Roman set everyone can use. However, there is an exact Latin
+version which is not done. The 'goodcity' part of its name comes from German:
+guten-good, burg-city (or fortress), (actually, Earl Allen, a fellow Altsysian
+coined the term: Thanks, Earl!) [Earl notes that he goofed on the translation
+from German, mistakenly translating 'berg' as if it were spelled 'burg.' A
+better translation would be GoodMountModern, since 'berg' should actually be
+translated 'Mountain' rather than 'City,' as anyone who knows what an iceberg
+is would have done. Apologies for the mistranslation, but Andrew has decided
+to stick with the name for now.]
+
+Enjoy and use in good health.
+
+Andrew S. Meit Altsys Tester (and Stackhead) Altsys Corporation
+
+If you have any comments you'd like to pass on to Andrew you can send them to
+him at CompuServe: 76004,2071; MCI Mail: ALTSYS; America Online: Altsys;
+AppleLink: D0590. If you'd prefer to call, the phone number is (214) 680-2060
+and the FAX number is (214) 680-0537. Andrew appreciates any and all feedback
+you can give him.
