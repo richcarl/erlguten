@@ -8,6 +8,6 @@ configure: configure.ac
 	autoconf
 
 clean:
-	-rm -f config.cache config.log config.status configure $(MK_INCLUDE) $(SYSWATCH_START)
-
-
+	-rm -f configure include.mk \
+	config.cache config.log config.status
+	-rm -rf autom4te.cache

@@ -49,8 +49,9 @@ fontmap: ../priv/src/Makefile
 	$(ERL) -noshell -pa ../ebin -s eg_afm make -s erlang halt
 
 clean:
-	-rm ../priv/src/Makefile
-	-rm -f $(ERL_OBJECTS) eg_hyphen_rules.erl \
+	-rm ../priv/src/Makefile ../priv/src/*.erl ../priv/src/*.pfb
+	-rm -f $(ERL_OBJECTS) ../ebin/eg_font_*.beam\
+		eg_hyphen_rules.erl \
 		eg_hyphen_rules_da_DK.erl \
 		eg_hyphen_rules_en_GB.erl \
 		eg_hyphen_rules_fi_FI.erl \
