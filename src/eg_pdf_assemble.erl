@@ -222,15 +222,13 @@ mkFontFile(Handler) ->
 		   {"Length3",Len3}]},
      Bin}.
 
-this_dir() ->
-    filename:dirname(code:which(?MODULE)).
-
 font_dir() ->
     case code:priv_dir(erlguten) of
-	{error, bad_name} ->
-	    filename:join(this_dir(), "../priv/src");
+	{error, _} ->
+	    filename:join(filename:dirname(code:which(?MODULE)),
+                          "../priv/src");
 	N ->
-	    filename:join(N, "priv/src")
+	    filename:join(N, "src")
     end.
 
 get_font_program(Handler) ->
