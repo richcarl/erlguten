@@ -176,14 +176,12 @@ first([H|T]) ->
     [H|first(T)].
 
 mk_Make(FontMap) ->
-    Str = ["ERLC = erlc\n",
-           "ERLC_FLAGS = +debug_info +nowarn_unused_vars +nowarn_unused_function\n\n",
-	   "MODULES = eg_font_map ",
+    Str = ["MODULES = eg_font_map ",
 	   lists:map(fun(J) ->[J," "] end, FontMap),"\n\n",
 	   "OBJECTS=$(MODULES:%=../../ebin/%.beam)\n",
 	   "all: $(OBJECTS)\n\n",
 	   "../../ebin/%.beam: %.erl\n",
-	   "\t$(ERLC) $(ERLC_FLAGS) -o ../../ebin $<\n\n",
+	   "\terlc -o ../../ebin $<\n\n",
 	   "clean:\n",
 	   "\trm -f $(OBJECTS) Makefile *.erl *.pfb\n\n"
 	  ],

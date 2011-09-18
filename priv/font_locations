@@ -1,8 +1,8 @@
-../priv/fonts/adobe/courier
-../priv/fonts/adobe/helvetic
-../priv/fonts/adobe/symbol
-../priv/fonts/adobe/times
-../priv/fonts/adobe/zapfding
-../priv/fonts/vsecret
-../priv/fonts/ocr
-../priv/fonts/gocm
+priv/fonts/adobe/courier
+priv/fonts/adobe/helvetic
+priv/fonts/adobe/symbol
+priv/fonts/adobe/times
+priv/fonts/adobe/zapfding
+priv/fonts/vsecret
+priv/fonts/ocr
+priv/fonts/gocm

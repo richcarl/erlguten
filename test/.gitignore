@@ -1,3 +1,4 @@
+*.beam
 eg_test*.pdf
 kd_test*.pdf
 tmo_doc.pdf
