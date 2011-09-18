@@ -95,7 +95,7 @@ diter(X, Inc, Stop, F) ->
 %%      applies Fun(File, Acc) -> Acc. to each file
 
 find_files(Dir, Re, Flag) -> 
-    Re1 = regexp:sh_to_awk(Re),
+    Re1 = sh_to_awk(Re),
     lists:reverse(find_files(Dir, Re1, Flag,
                              fun(File, Acc) ->[File|Acc] end, [])).
 
@@ -109,11 +109,11 @@ find_files([File|T], Dir, Reg, Recursive, Fun, Acc0) ->
     FullName = Dir ++  [$/|File],
     case file_type(FullName) of
 	regular ->
-	    case regexp:match(FullName, Reg) of
-		{match, _, _}  -> 
+	    case re:run(FullName, Reg) of
+		{match, _} ->
 		    Acc = Fun(FullName, Acc0),
 		    find_files(T, Dir, Reg, Recursive, Fun, Acc);
-		_ ->
+		nomatch ->
 		    find_files(T, Dir, Reg, Recursive, Fun, Acc0)
 	    end;
 	directory -> 
@@ -153,3 +153,56 @@ priv_dir() ->
 	N ->
 	    N
     end.
+
+%% NOTE: This function is copied from the deprecated stdlib 'regexp' module
+%% sh_to_awk(ShellRegExp)
+%%  Convert a sh style regexp into a full AWK one. The main difficulty is
+%%  getting character sets right as the conventions are different.
+
+-spec sh_to_awk(ShRegExp) -> AwkRegExp when
+      ShRegExp :: string(),
+      AwkRegExp :: string().
+
+sh_to_awk(Sh) -> "^(" ++ sh_to_awk_1(Sh).	%Fix the beginning
+
+sh_to_awk_1([$*|Sh]) ->				%This matches any string
+    ".*" ++ sh_to_awk_1(Sh);
+sh_to_awk_1([$?|Sh]) ->				%This matches any character
+    [$.|sh_to_awk_1(Sh)];
+sh_to_awk_1([$[,$^,$]|Sh]) ->			%This takes careful handling
+    "\\^" ++ sh_to_awk_1(Sh);
+sh_to_awk_1("[^" ++ Sh) -> [$[|sh_to_awk_2(Sh, true)];
+sh_to_awk_1("[!" ++ Sh) -> "[^" ++ sh_to_awk_2(Sh, false);
+sh_to_awk_1([$[|Sh]) -> [$[|sh_to_awk_2(Sh, false)];
+sh_to_awk_1([C|Sh]) ->
+    %% Unspecialise everything else which is not an escape character.
+    case special_char(C) of
+	true -> [$\\,C|sh_to_awk_1(Sh)];
+	false -> [C|sh_to_awk_1(Sh)]
+    end;
+sh_to_awk_1([]) -> ")$".			%Fix the end
+
+sh_to_awk_2([$]|Sh], UpArrow) -> [$]|sh_to_awk_3(Sh, UpArrow)];
+sh_to_awk_2(Sh, UpArrow) -> sh_to_awk_3(Sh, UpArrow).
+
+sh_to_awk_3([$]|Sh], true) -> "^]" ++ sh_to_awk_1(Sh);
+sh_to_awk_3([$]|Sh], false) -> [$]|sh_to_awk_1(Sh)];
+sh_to_awk_3([C|Sh], UpArrow) -> [C|sh_to_awk_3(Sh, UpArrow)];
+sh_to_awk_3([], true) -> [$^|sh_to_awk_1([])];
+sh_to_awk_3([], false) -> sh_to_awk_1([]).
+
+%%  Test if a character is a special character.
+special_char($|) -> true;
+special_char($*) -> true;
+special_char($+) -> true;
+special_char($?) -> true;
+special_char($() -> true;
+special_char($)) -> true;
+special_char($\\) -> true;
+special_char($^) -> true;
+special_char($$) -> true;
+special_char($.) -> true;
+special_char($[) -> true;
+special_char($]) -> true;
+special_char($") -> true;
+special_char(_C) -> false.

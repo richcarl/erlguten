@@ -26,6 +26,7 @@
 
 -module(eg_xml_tokenise).
 
+-compile({no_auto_import,[error/2]}).
 
 %% get_next_token(Str, Line) -> {done, Token, Str1, Line1}
 %%                |  {error, Line, Why}
