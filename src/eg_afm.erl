@@ -115,13 +115,12 @@ make() ->
     mk_eg_font_map(lists:map(fun({_,M,Func,I,_}) -> {M,Func,I} end, F2)),
     External = [{File,Mod} || {File,Mod,_,_,external} <- F2],
     io:format("External=~p~n",[External]),
-    lists:foreach(fun({File,Mod}) -> copy_pdf(File,Mod) end, External).
-
-fonts_out() -> "../priv/src".
+    lists:foreach(fun({File,Mod}) -> copy_pfb(File,Mod) end, External).
 
 %% Just run pdf_afm_qdh:all() to build the font tables
 all_afms() ->
-    {ok, F} = file:open("../priv/font_locations", read),
+    {ok, F} = file:open(filename:join(eg_lib:priv_dir(), "font_locations"),
+                        read),
     L= read_locations(F, []),
     file:close(F),
     find_atms(L, []).
@@ -177,20 +176,20 @@ first([H|T]) ->
     [H|first(T)].
 
 mk_Make(FontMap) ->
-    Str = ["ERLC_FLAGS=+nowarn_unused_vars +nowarn_unused_function\n"
-	   "include ../../include.mk\n\n"
-	   "../../ebin/%.beam: %.erl\n"
-	   "\t$(ERLC) $(ERLC_FLAGS) -o ../../ebin $<\n\n"
-	   "MODS= eg_font_map ",
+    Str = ["ERLC = erlc\n",
+           "ERLC_FLAGS = +debug_info +nowarn_unused_vars +nowarn_unused_function\n\n",
+	   "MODULES = eg_font_map ",
 	   lists:map(fun(J) ->[J," "] end, FontMap),"\n\n",
-	   "EBIN_FILES=${MODS:%=../../ebin/%.beam}\n"
-	   "all: ${EBIN_FILES}\n\n",
+	   "OBJECTS=$(MODULES:%=../../ebin/%.beam)\n",
+	   "all: $(OBJECTS)\n\n",
+	   "../../ebin/%.beam: %.erl\n",
+	   "\t$(ERLC) $(ERLC_FLAGS) -o ../../ebin $<\n\n",
 	   "clean:\n",
-	   "\trm -f ${EBIN_FILES}\n\n"
+	   "\trm -f $(OBJECTS) Makefile *.erl *.pfb\n\n"
 	  ],
     %% io:format("Makefile(~s)=~s~n",[Makefile,Str]),
-    file:write_file(fonts_out() ++ "/Makefile", [Str]).
-    
+    file:write_file(filename:join(eg_lib:priv_src_dir(), "Makefile"), [Str]).
+
 %% [{Mod,Fname,Index}]
 mk_eg_font_map(FontMap) ->
     All = lists:map(fun(I) -> element(2, I) end, FontMap),
@@ -201,12 +200,13 @@ mk_eg_font_map(FontMap) ->
 	       end, FontMap),
 	   "handler(_) -> undefined.\n",
 	   "all_fonts() -> ",io_lib:format("~p.~n", [All])],
-    file:write_file(fonts_out() ++ "/eg_font_map.erl", [Str]).
+    file:write_file(filename:join(eg_lib:priv_src_dir(), "eg_font_map.erl"),
+                    [Str]).
 
 parse(F,Index) ->
     %% io:format("Parsing:~p~n",[F]),
     Mod = "eg_font_" ++ eg_pdf_op:i2s(Index),
-    Out = fonts_out() ++ "/" ++ Mod ++ ".erl",
+    Out = filename:join(eg_lib:priv_src_dir(), Mod ++ ".erl"),
     L = file2numbered_lines(F),
     Fn   = get_font_name(L),
     io:format("Found font:~s~n",[Fn]),
@@ -244,10 +244,10 @@ parse(F,Index) ->
     {Mod, Fn, Type}.
 
 
-copy_pdf(File, Mod) ->
+copy_pfb(File, Mod) ->
     Root = filename:rootname(File),
     From = Root ++ ".pfb",
-    To = fonts_out() ++"/" ++ Mod ++ ".pfb",
+    To = filename:join(eg_lib:priv_src_dir(), Mod ++ ".pfb"),
     io:format("Copy From:~s To:~s~n",[From,To]),
     case file:read_file(From) of
 	{ok, Bin} ->

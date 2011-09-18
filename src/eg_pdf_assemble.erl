@@ -222,17 +222,9 @@ mkFontFile(Handler) ->
 		   {"Length3",Len3}]},
      Bin}.
 
-font_dir() ->
-    case code:priv_dir(erlguten) of
-	{error, _} ->
-	    filename:join(filename:dirname(code:which(?MODULE)),
-                          "../priv/src");
-	N ->
-	    filename:join(N, "src")
-    end.
-
 get_font_program(Handler) ->
-    File = filename:join(font_dir(), atom_to_list(Handler) ++ ".pfb"),
+    File = filename:join(eg_lib:priv_src_dir(),
+                         atom_to_list(Handler) ++ ".pfb"),
     %% io:format("reading Font from:~s~n",[File]),
     P = eg_embed:parse_pfb(File),
     case P of

@@ -1,6 +1,6 @@
 include vsn.mk
 APPNAME=erlguten
-SUBDIRS=src priv/src
+SUBDIRS=src
 DOC_OPTS={def,{version,\"$(VSN)\"}}
 ERL=erl
 

@@ -21,7 +21,8 @@
 
 -module(eg_lib).
 
--export([showGrid/2, moveAndShow/4, find_files/3, find_files/5]).
+-export([showGrid/2, moveAndShow/4, find_files/3, find_files/5,
+         priv_dir/0, priv_src_dir/0]).
 
 -include_lib("kernel/include/file.hrl").
 
@@ -139,4 +140,16 @@ file_type(File) ->
 	    end;
 	_ ->
 	    error
+    end.
+
+priv_src_dir() ->
+    filename:join(priv_dir(), "src").
+
+priv_dir() ->
+    case code:priv_dir(erlguten) of
+	{error, _} ->
+	    filename:join(filename:dirname(code:which(?MODULE)),
+                          "../priv");
+	N ->
+	    N
     end.

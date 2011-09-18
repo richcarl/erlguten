@@ -255,10 +255,9 @@ mkFontFile(Handler) ->
      Bin}.
 
 
-font_dir() -> "../priv/src".
-
 get_font_program(Handler) ->
-    File = font_dir() ++ "/" ++ atom_to_list(Handler) ++ ".pfb",
+    File = filename:join(eg_lib:priv_src_dir(),
+                         atom_to_list(Handler) ++ ".pfb"),
     %% io:format("reading Font from:~s~n",[File]),
     P = eg_embed:parse_pfb(File),
     case P of
