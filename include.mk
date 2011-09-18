@@ -1,17 +1,8 @@
 ###-*-makefile-*-   ; force emacs to enter makefile-mode
-ERL=@ERL@
-ERLC=@ERLC@
-ERL_DIR=@ERLDIR@
-ERL_C_INCLUDE_DIR := $(ERL_DIR)/usr/include
-
-
-ERLC_FLAGS+=-W  +debug_info
-
-ifeq ($(TYPE), debug)
-ERLC_FLAGS+=-Ddebug
-endif
-
-EMAKEFILE=Emakefile
+PERL=perl
+ERL=erl
+ERLC=erlc
+ERLC_FLAGS=+debug_info +nowarn_unused_vars +nowarn_unused_function
 
 ERL_SOURCES := $(wildcard *.erl)
 ERL_OBJECTS := $(ERL_SOURCES:%.erl=../ebin/%.beam)
@@ -25,7 +16,7 @@ APPSCRIPT = '$$vsn=shift; $$mods=""; while(@ARGV){ $$_=shift; s/^([A-Z].*)$$/\'\
 # Targets
 
 ../ebin/%.app: %.app.src ../vsn.mk Makefile
-	perl -e $(APPSCRIPT) "$(VSN)" $(MODULES) < $< > $@
+	$(PERL) -e $(APPSCRIPT) "$(VSN)" $(MODULES) < $< > $@
 
 ../ebin/%.beam: %.erl
 	$(ERLC) $(ERLC_FLAGS) -o ../ebin $<

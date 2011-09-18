@@ -26,7 +26,7 @@
 
 -module(tmo_doc).
 
--export([file/0, file/1, file/2]).
+-export([test/0, test/1, test/2]).
 
 -define(font_size, 10).
 
@@ -51,10 +51,10 @@
         }).
              
 
-file() ->
-    file("process.xml").
+test() ->
+    test("tmo_doc.xml").
 
-file(File_name) ->
+test(File_name) ->
     Outfile = filename:rootname(filename:basename(File_name)) ++ ".pdf",
     Xml = eg_xml_lite:parse_file(File_name),
     {value, {xml, Doc}} = lists:keysearch(xml, 1, Xml),
@@ -77,7 +77,7 @@ file(File_name) ->
     file:write_file(Outfile,[Serialised]),
     eg_pdf:delete(PDF).
 
-file(File_name, section) ->
+test(File_name, section) ->
     Outfile = filename:rootname(filename:basename(File_name)) ++ ".pdf",
     Xml = eg_xml_lite:parse_file(File_name),
     {value, {xml, Doc}} = lists:keysearch(xml, 1, Xml),

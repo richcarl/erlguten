@@ -178,7 +178,7 @@ first([H|T]) ->
 
 mk_Make(FontMap) ->
     Str = ["ERLC_FLAGS=+nowarn_unused_vars +nowarn_unused_function\n"
-	   "include ../../conf/include.mk\n\n"
+	   "include ../../include.mk\n\n"
 	   "../../ebin/%.beam: %.erl\n"
 	   "\t$(ERLC) $(ERLC_FLAGS) -o ../../ebin $<\n\n"
 	   "MODS= eg_font_map ",

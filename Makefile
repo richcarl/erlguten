@@ -4,11 +4,11 @@ SUBDIRS=src priv/src
 DOC_OPTS={def,{version,\"$(VSN)\"}}
 ERL=erl
 
-.PHONY: all conf test $(SUBDIRS)
+.PHONY: all test $(SUBDIRS)
 
-all test: conf $(SUBDIRS)
+all test: $(SUBDIRS)
 
-conf test:
+test:
 	cd $@ && $(MAKE)
 
 $(SUBDIRS):
@@ -19,9 +19,6 @@ docs: doc/index.html
 doc/index.html: doc/overview.edoc $(wildcard src/*.erl)
 	$(ERL) -noshell -eval "edoc:application($(APPNAME), \".\", [$(DOC_OPTS)])" -s init stop
 
-clean: conf
+clean:
 	cd src && $(MAKE) clean
 	cd test && $(MAKE) clean
-
-conf_clean:
-	cd conf && $(MAKE) clean
