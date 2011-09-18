@@ -57,8 +57,8 @@ test()->
 			"page 2 for more examples"),
 
     eg_pdf:set_font(PDF,"Times-Roman", 24),
-    eg_pdf_lib:moveAndShow(PDF, 50, 400, "The comming pages display all "
-			"the availible"),
+    eg_pdf_lib:moveAndShow(PDF, 50, 400, "The following pages display all "
+			"the available"),
     eg_pdf_lib:moveAndShow(PDF, 50, 350, "fonts and all their printable "
 			"characters"),
     eg_pdf_lib:moveAndShow(PDF, 50, 300,
