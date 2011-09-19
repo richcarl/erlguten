@@ -71,7 +71,7 @@ test(9) ->
     demo(PDF, 270, 125, 500, 9, 10, 0, 60),
     demo(PDF, 315, 375, 375, 12, 13, 10, 120),
     eg_pdf:end_text(PDF),
-    eg_pdf_lib:showGrid(PDF, a4),
+    eg_pdf:show_grid(PDF, a4),
     {Serialised, _PageNo} = eg_pdf:export(PDF),
     file:write_file("eg_test5.pdf",[Serialised]),
     eg_pdf:delete(PDF).

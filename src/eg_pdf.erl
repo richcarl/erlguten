@@ -96,6 +96,9 @@
          transform/7, translate/3
         ]).
 
+%% some utility functions
+-export([draw_box/6, show_grid/2, moveAndShow/4]).
+
 
 %% Set up Info, Catalog and Pages
 
@@ -506,3 +509,87 @@ inBuiltFonts() ->
      "Courier","Courier-Bold","Courier-Oblique","Courier-BoldOblique",
      "Symbol", "ZapfDingbats"].
 
+
+%% -------------------------------------
+%% Utility functions
+
+%% show_grid(PDF, a4 | usLetter)
+%%   adds a grid to the current page page
+
+paper_size(a4) ->
+    {595, 842};
+paper_size(usLetter) ->
+    {612, 792}.
+
+show_grid(PDF, Paper) ->
+    {PaperWidth, PaperHeight} = paper_size(Paper),
+    %% Top = PaperHeight - 10,
+    Top = 825, % hack
+    Bottom = 10,
+    Left = 10,
+    %% Right = PaperWidth - 10,
+    Right = 575,
+    eg_pdf:set_font(PDF,"Helvetica", 8),
+    vlines(PDF, Left, Right, Top, Bottom),
+    hlines(PDF, Left, Right, Top, Bottom).
+
+hlines(PDF, Left, Right, Top, Bottom) ->
+    diter(Top,25,10,
+	  fun(Y) ->
+		  %% eg_pdf:set_fill_gray(PDF,1.0),
+		  eg_pdf:line(PDF, Left, Y, Left+20, Y),
+		  eg_pdf:line(PDF, Right, Y, Right-20, Y),
+		  %% eg_pdf:set_fill_gray(PDF,0.8),
+		  eg_pdf:line(PDF, Left+20,Y,Right-20,Y),
+		  moveAndShow(PDF, Left, Y+2, eg_pdf_op:n2s(Y)),
+		  moveAndShow(PDF, Right-20, Y+2, eg_pdf_op:n2s(Y)),
+		  true
+	  end).
+
+vlines(PDF, Left, Right, Top, Bottom) ->
+    diter(Right,25,10,
+	  fun(X) ->
+		  eg_pdf:line(PDF, X, Top, X, Top-20),
+		  moveAndShow(PDF, X-5, Top-35,eg_pdf_op:n2s(X)),
+		  eg_pdf:line(PDF, X, Bottom, X, Bottom+20),
+		  eg_pdf:line(PDF, X, Top -40, X, Bottom + 35),
+		  moveAndShow(PDF, X-5, Bottom+23,eg_pdf_op:n2s(X))
+	  end).
+
+moveAndShow(PDF, X, Y, Str) ->
+    eg_pdf:begin_text(PDF),
+    eg_pdf:set_text_pos(PDF, X, Y),
+    eg_pdf:text(PDF, Str),
+    eg_pdf:end_text(PDF).
+
+%% downwards iterator
+
+diter(X, Inc, Stop, F) when X < Stop ->
+    true;
+diter(X, Inc, Stop, F) ->
+    F(X), diter(X-Inc,Inc,Stop,F).
+
+draw_box(PDF, X, Y, Measure, Lines, MaxRows) ->
+    eg_pdf:append_stream(PDF, draw_box1(X, Y, Measure, Lines, MaxRows)).
+
+draw_box1(X1,Y1,Measure,Leading,MaxRows) ->
+    %% X1,Y1,Leading are in points
+    %% Measure        is in picas
+    X2 = X1 + Measure,
+    Y2 = Y1 - Leading*MaxRows,
+    [" q  0.4 g 0.4 G 0 w ",
+     %% verticals
+     line(X1,Y1,X1,Y2),
+     line(X2,Y1,X2,Y2),
+     for(0, MaxRows,
+	 fun(I) ->
+		 Y = Y1 - I*Leading,
+		 line(X1,Y,X2,Y)
+	 end),
+     " Q "].
+
+for(I, Max, F) when I > Max -> [];
+for(I, Max, F)              -> [F(I)|for(I+1,Max,F)].
+
+line(X1,Y1,X2,Y2) -> [eg_pdf_op:i2s(X1)," ",eg_pdf_op:i2s(Y1)," m ",
+		      eg_pdf_op:i2s(X2)," ",eg_pdf_op:i2s(Y2)," l S "].

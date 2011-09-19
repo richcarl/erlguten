@@ -41,32 +41,32 @@ test()->
     PDF = eg_pdf:new(),
     eg_pdf:set_pagesize(PDF,a4),
     eg_pdf:set_page(PDF,1),
-    eg_pdf_lib:showGrid(PDF, a4),
+    eg_pdf:show_grid(PDF, a4),
     eg_pdf:set_font(PDF,"Times-Roman", 36),
     Base = 575,
-    eg_pdf_lib:moveAndShow(PDF, 50,Base, "A4 template planning sheet-"),
-    eg_pdf_lib:moveAndShow(PDF, 50,Base-50, "Use this sheet to see the"),
-    eg_pdf_lib:moveAndShow(PDF, 50,Base-100,
+    eg_pdf:moveAndShow(PDF, 50,Base, "A4 template planning sheet-"),
+    eg_pdf:moveAndShow(PDF, 50,Base-50, "Use this sheet to see the"),
+    eg_pdf:moveAndShow(PDF, 50,Base-100,
                            "co-ordinates of your objects."),
     eg_pdf:set_font(PDF, "GoodCityModern", 60),
-    eg_pdf_lib:moveAndShow(PDF, 50, 675, "ErlGuten fonts"),
+    eg_pdf:moveAndShow(PDF, 50, 675, "ErlGuten fonts"),
     eg_pdf:set_font(PDF,"Times-Italic", 16),
-    eg_pdf_lib:moveAndShow(PDF, 50, 625, "The above is similar to"
+    eg_pdf:moveAndShow(PDF, 50, 625, "The above is similar to"
 		" Gutenbergs original font"),
-    eg_pdf_lib:moveAndShow(PDF, 50, 610, "used in the 42 line bible - see "
+    eg_pdf:moveAndShow(PDF, 50, 610, "used in the 42 line bible - see "
 			"page 2 for more examples"),
 
     eg_pdf:set_font(PDF,"Times-Roman", 24),
-    eg_pdf_lib:moveAndShow(PDF, 50, 400, "The following pages display all "
+    eg_pdf:moveAndShow(PDF, 50, 400, "The following pages display all "
 			"the available"),
-    eg_pdf_lib:moveAndShow(PDF, 50, 350, "fonts and all their printable "
+    eg_pdf:moveAndShow(PDF, 50, 350, "fonts and all their printable "
 			"characters"),
-    eg_pdf_lib:moveAndShow(PDF, 50, 300,
+    eg_pdf:moveAndShow(PDF, 50, 300,
                            "latin-1 codes 32-126 and 160-255."),
-    eg_pdf_lib:moveAndShow(PDF, 50, 250, "line 1 =  32 - 79"),
-    eg_pdf_lib:moveAndShow(PDF, 50, 200, "line 2 =  80 - 126"),
-    eg_pdf_lib:moveAndShow(PDF, 50, 150, "line 3 = 160 - 208"),
-    eg_pdf_lib:moveAndShow(PDF, 50, 100, "line 4 = 209 - 255"),
+    eg_pdf:moveAndShow(PDF, 50, 250, "line 1 =  32 - 79"),
+    eg_pdf:moveAndShow(PDF, 50, 200, "line 2 =  80 - 126"),
+    eg_pdf:moveAndShow(PDF, 50, 150, "line 3 = 160 - 208"),
+    eg_pdf:moveAndShow(PDF, 50, 100, "line 4 = 209 - 255"),
 
     PageNo = 2,
     eg_pdf:new_page(PDF),
@@ -86,18 +86,18 @@ showem(PDF, Y, FontL, PageNo) when Y < ?BLOCK_H ->
 showem(PDF, Y, [H|T], PageNo) ->
     eg_pdf:set_font(PDF, "Times-Roman", 10),
     X1 = 20,
-    eg_pdf_lib:moveAndShow(PDF, 20,Y, H),
+    eg_pdf:moveAndShow(PDF, 20,Y, H),
     eg_pdf:set_font(PDF,H, ?FONT_H),
     X2 = X1 + 120,
-    eg_pdf_lib:moveAndShow(PDF, X2, Y,
+    eg_pdf:moveAndShow(PDF, X2, Y,
                            "abcdefg ABCDEFG 1234567890 åäö ÅÄÖ"),
 
     eg_pdf:set_font(PDF,H, ?FONT_Hs),
     X3 = X1 + 20,
-    eg_pdf_lib:moveAndShow(PDF, X3, Y - (?LINE_Hs * 2), line1()),
-    eg_pdf_lib:moveAndShow(PDF, X3, Y - (?LINE_Hs * 3), line2()),
-    eg_pdf_lib:moveAndShow(PDF, X3, Y - (?LINE_Hs * 4), line3()),
-    eg_pdf_lib:moveAndShow(PDF, X3, Y - (?LINE_Hs * 5), line4()),
+    eg_pdf:moveAndShow(PDF, X3, Y - (?LINE_Hs * 2), line1()),
+    eg_pdf:moveAndShow(PDF, X3, Y - (?LINE_Hs * 3), line2()),
+    eg_pdf:moveAndShow(PDF, X3, Y - (?LINE_Hs * 4), line3()),
+    eg_pdf:moveAndShow(PDF, X3, Y - (?LINE_Hs * 5), line4()),
 
     showem(PDF, Y- ?BLOCK_H, T, PageNo).
 

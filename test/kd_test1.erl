@@ -100,11 +100,11 @@ test(Address, Nr, Date, PNr, ONr, ODate, ByDate, Items,
     %% Rubriker
     B0 = 587,
     eg_pdf:set_font(PDF, "Helvetica-Bold", 8),
-    eg_pdf_lib:moveAndShow(PDF, 40, B0, to_mac("Artikelnr")),
-    eg_pdf_lib:moveAndShow(PDF, 90, B0, to_mac("Artikelbenämning")),
-    eg_pdf_lib:moveAndShow(PDF, 430, B0, to_mac("Antal")),
-    eg_pdf_lib:moveAndShow(PDF, 468, B0, [8#210|"-pris"]),
-    eg_pdf_lib:moveAndShow(PDF, 512, B0, to_mac("Belopp")),
+    eg_pdf:moveAndShow(PDF, 40, B0, to_mac("Artikelnr")),
+    eg_pdf:moveAndShow(PDF, 90, B0, to_mac("Artikelbenämning")),
+    eg_pdf:moveAndShow(PDF, 430, B0, to_mac("Antal")),
+    eg_pdf:moveAndShow(PDF, 468, B0, [8#210|"-pris"]),
+    eg_pdf:moveAndShow(PDF, 512, B0, to_mac("Belopp")),
 
     %% Artiklar
     items(PDF, Items, 570, 40, 90, 450, 490, 540),
@@ -156,7 +156,7 @@ test(Address, Nr, Date, PNr, ONr, ODate, ByDate, Items,
 %%     eg_pdf:save_state(PDF),
 %%     eg_pdf:set_fill_gray(PDF,0.75),
 %%     eg_pdf:set_stroke_gray(PDF,0.75),
-%%     eg_pdf_lib:showGrid(PDF, a4),
+%%     eg_pdf:show_grid(PDF, a4),
 %%     eg_pdf:restore_state(PDF).
 
 
@@ -174,82 +174,82 @@ our_logo(PDF, X, Y) ->
 
 address(PDF, {Name, Street, City}, X, Y) ->
     eg_pdf:set_font(PDF, "Courier", 12),
-    eg_pdf_lib:moveAndShow(PDF, X, Y, to_mac(Name)),
-    eg_pdf_lib:moveAndShow(PDF, X, Y-20, to_mac(Street)),
-    eg_pdf_lib:moveAndShow(PDF, X, Y-40, to_mac(City)).
+    eg_pdf:moveAndShow(PDF, X, Y, to_mac(Name)),
+    eg_pdf:moveAndShow(PDF, X, Y-20, to_mac(Street)),
+    eg_pdf:moveAndShow(PDF, X, Y-40, to_mac(City)).
 
 
 our_info(PDF, BGNr, X, Y) ->
     eg_pdf:set_font(PDF, "Helvetica", 7),
-    eg_pdf_lib:moveAndShow(PDF,X,Y,
+    eg_pdf:moveAndShow(PDF,X,Y,
                            "Kreditor AB, Box XXX, 123 34 Stockholm"),
-    eg_pdf_lib:moveAndShow(PDF,X,Y-10,
+    eg_pdf:moveAndShow(PDF,X,Y-10,
                            "Org nr 556021-4566 (F-skattebevis)"),
-    eg_pdf_lib:moveAndShow(PDF,X,Y-20, "Momsreg nr SE556354321345"),
-    eg_pdf_lib:moveAndShow(PDF,X,Y-30,
+    eg_pdf:moveAndShow(PDF,X,Y-20, "Momsreg nr SE556354321345"),
+    eg_pdf:moveAndShow(PDF,X,Y-30,
                         "Betala till: BG "++BGNr++" PG 474 70 02-6").
 
 invoice_nr(PDF, Nr, Date, PNr, ONr, ODate, X, Y) ->
     eg_pdf:set_font(PDF, "Helvetica-Bold", 15),
-    eg_pdf_lib:moveAndShow(PDF, X, Y, "FAKTURA"),
+    eg_pdf:moveAndShow(PDF, X, Y, "FAKTURA"),
     eg_pdf:set_font(PDF, "Helvetica", 10),
-    eg_pdf_lib:moveAndShow(PDF, X, Y-20, "Datum"),
-    eg_pdf_lib:moveAndShow(PDF, X+70, Y-20, "Kundnr"),
-    eg_pdf_lib:moveAndShow(PDF, X+70+70+25, Y-20, "Fakturanr"),
+    eg_pdf:moveAndShow(PDF, X, Y-20, "Datum"),
+    eg_pdf:moveAndShow(PDF, X+70, Y-20, "Kundnr"),
+    eg_pdf:moveAndShow(PDF, X+70+70+25, Y-20, "Fakturanr"),
 
     eg_pdf:set_font(PDF, "Courier", 10),
-    eg_pdf_lib:moveAndShow(PDF, X, Y-30, Date),
-    eg_pdf_lib:moveAndShow(PDF, X+70, Y-30, PNr),
-    eg_pdf_lib:moveAndShow(PDF, X+70+70+25, Y-30, Nr),
+    eg_pdf:moveAndShow(PDF, X, Y-30, Date),
+    eg_pdf:moveAndShow(PDF, X+70, Y-30, PNr),
+    eg_pdf:moveAndShow(PDF, X+70+70+25, Y-30, Nr),
 
     eg_pdf:set_font(PDF, "Helvetica", 10),
-    eg_pdf_lib:moveAndShow(PDF, X, Y-50, "Orderdatum"),
-    eg_pdf_lib:moveAndShow(PDF, X+70, Y-50, "Ordernr"),
+    eg_pdf:moveAndShow(PDF, X, Y-50, "Orderdatum"),
+    eg_pdf:moveAndShow(PDF, X+70, Y-50, "Ordernr"),
 
     eg_pdf:set_font(PDF, "Courier", 10),
-    eg_pdf_lib:moveAndShow(PDF, X, Y-60, ODate),
-    eg_pdf_lib:moveAndShow(PDF, X+70, Y-60, ONr).
+    eg_pdf:moveAndShow(PDF, X, Y-60, ODate),
+    eg_pdf:moveAndShow(PDF, X+70, Y-60, ONr).
 
 
 use_ocr(PDF, OCR, X, Y) ->
     eg_pdf:set_font(PDF, "Helvetica", 9),
     Str = to_mac("Ange alltid OCR-numret: "),
-    eg_pdf_lib:moveAndShow(PDF, X, Y, Str),
+    eg_pdf:moveAndShow(PDF, X, Y, Str),
     Width = eg_pdf:get_string_width(PDF, "Helvetica", 9, Str),
     eg_pdf:set_font(PDF, ?OCRFONT, ?OCRSIZE),
-    eg_pdf_lib:moveAndShow(PDF, X+Width+15, Y, OCR).
+    eg_pdf:moveAndShow(PDF, X+Width+15, Y, OCR).
 
 method_of_pay(PDF, Method, X, Y) ->
     eg_pdf:set_font(PDF, "Helvetica", 9),
-    eg_pdf_lib:moveAndShow(PDF, X, Y, to_mac("Betalningssätt:  "++Method)).
+    eg_pdf:moveAndShow(PDF, X, Y, to_mac("Betalningssätt:  "++Method)).
 
 at_latest(PDF, ByDate, X, Y) ->
     eg_pdf:set_font(PDF, "Helvetica-Bold", 9),
-    eg_pdf_lib:moveAndShow(PDF, X, Y, "Betalas senast:  "++ByDate).
+    eg_pdf:moveAndShow(PDF, X, Y, "Betalas senast:  "++ByDate).
 
 shipping(PDF, X, Y, Shipping) ->
     FontSize = 9,
     eg_pdf:set_font(PDF, "Helvetica", FontSize),
-    eg_pdf_lib:moveAndShow(PDF, X, Y, "Frakt/Porto"),
+    eg_pdf:moveAndShow(PDF, X, Y, "Frakt/Porto"),
     Width = eg_pdf:get_string_width(PDF,"Helvetica", FontSize, Shipping),
-    eg_pdf_lib:moveAndShow(PDF, X+140-Width, Y, Shipping).
+    eg_pdf:moveAndShow(PDF, X+140-Width, Y, Shipping).
 
 total(PDF, X, Y, Amount) ->
     FontSize = 9,
     eg_pdf:set_font(PDF, "Helvetica-Bold", FontSize),
-    eg_pdf_lib:moveAndShow(PDF, X, Y, "Summa"),
+    eg_pdf:moveAndShow(PDF, X, Y, "Summa"),
     Total = lists:flatten(
 	      io_lib:format("~w,~2.0.0w",
 			    [trunc(Amount),trunc(Amount*100) rem 100])),
     Width = eg_pdf:get_string_width(PDF,"Helvetica-Bold", FontSize, Total),
-    eg_pdf_lib:moveAndShow(PDF, X+140-Width, Y, Total).
+    eg_pdf:moveAndShow(PDF, X+140-Width, Y, Total).
     
 vat(PDF, X, Y, Vat) ->
     FontSize = 9,
     eg_pdf:set_font(PDF, "Helvetica", FontSize),
-    eg_pdf_lib:moveAndShow(PDF, X, Y, "Varav moms"),
+    eg_pdf:moveAndShow(PDF, X, Y, "Varav moms"),
     Width = eg_pdf:get_string_width(PDF,"Helvetica", FontSize, Vat),
-    eg_pdf_lib:moveAndShow(PDF, X+140-Width, Y, Vat).
+    eg_pdf:moveAndShow(PDF, X+140-Width, Y, Vat).
 
 
 items(PDF, Is, Y, X1, X2, X3, X4, X5) ->
@@ -259,17 +259,21 @@ items(PDF, Is, Y, X1, X2, X3, X4, X5) ->
 fmt_items(_PDF,[], _Y, _X1, _X2, _X3, _X4, _X5, _Font) -> ok;
 fmt_items(PDF, [{INr, Str, Nr, Price, Total}|Is],
           Y, X1, X2, X3, X4, X5, F) ->
-    eg_pdf_lib:moveAndShow(PDF, X1, Y, INr),
-    eg_pdf_lib:moveAndShow(PDF, X2, Y, to_mac(Str)),
+    eg_pdf:moveAndShow(PDF, X1, Y, INr),
+    eg_pdf:moveAndShow(PDF, X2, Y, to_mac(Str)),
     moveAndShowRight(PDF, F, X3, Y, Nr),
     moveAndShowRight(PDF, F, X4, Y, Price),
     moveAndShowRight(PDF, F, X5, Y, Total),
     fmt_items(PDF, Is, Y-10, X1, X2, X3, X4, X5, F).
 
-moveAndShowRight(PDF, {Font,Size}, X, Y, Str) ->
+%% Str is drawn to the left of X (X is the _right_ alignment side of the Str
+%% text box)
+moveAndShowRight(PDF, {Font,Size}, X, Y, Str) when is_integer(X),
+						   is_integer(Y) ->
     Width = eg_pdf:get_string_width(PDF, Font, Size, Str),
-    eg_pdf_lib:moveAndShow(PDF, X-Width, Y, Str).
-
+    eg_pdf:moveAndShow(PDF, X-Width, Y, Str);
+moveAndShowRight(_,_,_,_,_)  ->
+    ok.
 
 bg_avi(PDF, X, Y) ->
     eg_pdf:set_line_width(PDF, 1.5),
@@ -288,61 +292,61 @@ bg_avi(PDF, X, Y) ->
     eg_pdf:line(PDF, X+32, Y+249, X+32+545, Y+249),
     eg_pdf:line(PDF, X+32, Y+276, X+32+545, Y+276),
     eg_pdf:set_font(PDF, "Helvetica", 6),
-    eg_pdf_lib:moveAndShow(PDF, X+32+41, 85-6.2+Y, "Referensnummer"),
-    eg_pdf_lib:moveAndShow(PDF, X+32+202.6, 85-6.2+Y, "Kronor"),
-    eg_pdf_lib:moveAndShow(PDF, X+32+266.4, 85-6.2+Y, to_mac("Öre")),
-    eg_pdf_lib:moveAndShow(PDF, X+32+287.7, Y+99+25.5-6.2,
+    eg_pdf:moveAndShow(PDF, X+32+41, 85-6.2+Y, "Referensnummer"),
+    eg_pdf:moveAndShow(PDF, X+32+202.6, 85-6.2+Y, "Kronor"),
+    eg_pdf:moveAndShow(PDF, X+32+266.4, 85-6.2+Y, to_mac("Öre")),
+    eg_pdf:moveAndShow(PDF, X+32+287.7, Y+99+25.5-6.2,
                         to_mac("Till bankgiro")),
-    eg_pdf_lib:moveAndShow(PDF, X+32+367, Y+99+25.5-6.2,
+    eg_pdf:moveAndShow(PDF, X+32+367, Y+99+25.5-6.2,
                         to_mac("Betalningsmottagare")),
     eg_pdf:set_font(PDF, "Helvetica", 8),
-    eg_pdf_lib:moveAndShow(PDF, X+32+18.5, 87+Y,
+    eg_pdf:moveAndShow(PDF, X+32+18.5, 87+Y,
                         to_mac("VAR GOD GÖR INGA ÄNDRINGAR")),
-    eg_pdf_lib:moveAndShow(PDF, X+32+182.8, 87+Y,
+    eg_pdf:moveAndShow(PDF, X+32+182.8, 87+Y,
 			to_mac("MEDDELANDEN KAN INTE LÄMNAS PÅ AVIN")),
-    eg_pdf_lib:moveAndShow(PDF, X+32+372, 87+Y,
+    eg_pdf:moveAndShow(PDF, X+32+372, 87+Y,
 			to_mac("DEN AVLÄSES MASKINELLT")),
     eg_pdf:set_font(PDF, "Helvetica", 6),
-    eg_pdf_lib:moveAndShow(PDF, X+32+347, Y+276-6.2,
+    eg_pdf:moveAndShow(PDF, X+32+347, Y+276-6.2,
 			to_mac("Inbet avgift (ifylls av banken)")),
-    eg_pdf_lib:moveAndShow(PDF, X+32, Y+276-8.2,
+    eg_pdf:moveAndShow(PDF, X+32, Y+276-8.2,
 			to_mac("Sista betalningsdag")),
     eg_pdf:set_font(PDF, "Helvetica-Bold", 12),
-    eg_pdf_lib:moveAndShow(PDF, X+32+282, Y+276+4,
+    eg_pdf:moveAndShow(PDF, X+32+282, Y+276+4,
 			to_mac("INBETALNING/GIRERING AVI")),
     eg_pdf:set_font(PDF, "Times-Bold", 12),
-    eg_pdf_lib:moveAndShow(PDF, X+32, Y+276+4,
+    eg_pdf:moveAndShow(PDF, X+32, Y+276+4,
 			to_mac("bankgirot")),
     eg_pdf:set_font(PDF, "Helvetica-Bold", 24),
-    eg_pdf_lib:moveAndShow(PDF, X+32+461, Y+249+6, to_mac("OCR")).
+    eg_pdf:moveAndShow(PDF, X+32+461, Y+249+6, to_mac("OCR")).
 
 bg_avi_bgnr(PDF, X, Y, BGNr) ->
     eg_pdf:set_font(PDF, "Helvetica", 10),
-    eg_pdf_lib:moveAndShow(PDF, X+32+293.3, 103.4+Y, BGNr).
+    eg_pdf:moveAndShow(PDF, X+32+293.3, 103.4+Y, BGNr).
 
 bg_avi_recipient(PDF, X, Y, Rec) ->
     eg_pdf:set_font(PDF, "Helvetica", 10),
-    eg_pdf_lib:moveAndShow(PDF, X+32+370, 103.4+Y, Rec).
+    eg_pdf:moveAndShow(PDF, X+32+370, 103.4+Y, Rec).
 
 bg_avi_from(PDF, X, Y, {Name,Street,City}) ->
     eg_pdf:set_font(PDF, "Helvetica", 10),
-    eg_pdf_lib:moveAndShow(PDF, X+32, 184+Y, to_mac(Name)),
-    eg_pdf_lib:moveAndShow(PDF, X+32, 184+Y-15, to_mac(Street)),
-    eg_pdf_lib:moveAndShow(PDF, X+32, 184+Y-15-15, to_mac(City)).
+    eg_pdf:moveAndShow(PDF, X+32, 184+Y, to_mac(Name)),
+    eg_pdf:moveAndShow(PDF, X+32, 184+Y-15, to_mac(Street)),
+    eg_pdf:moveAndShow(PDF, X+32, 184+Y-15-15, to_mac(City)).
 
 bg_avi_lastdate(PDF, X, Y, LastDate) ->
     eg_pdf:set_font(PDF, "Helvetica", 10),
-    eg_pdf_lib:moveAndShow(PDF, X+32, 249+6+Y, to_mac(LastDate)).
+    eg_pdf:moveAndShow(PDF, X+32, 249+6+Y, to_mac(LastDate)).
 
 bg_avi_ocrline(PDF, X, Y, BGNr, Amount, OCR) ->
     eg_pdf:set_font(PDF, "Helvetica", 8),
-    eg_pdf_lib:moveAndShow(PDF, X+32+293.3, 187+Y,
+    eg_pdf:moveAndShow(PDF, X+32+293.3, 187+Y,
 			to_mac("OBS! Uppge alltid nedanstående "
 			       " referensnummer om betalning sker på")),
-    eg_pdf_lib:moveAndShow(PDF, X+32+293.3, 187+Y-10,
+    eg_pdf:moveAndShow(PDF, X+32+293.3, 187+Y-10,
 			to_mac("annat sätt än med detta inbetalningskort")),
     eg_pdf:set_font(PDF, ?OCRFONT, ?OCRSIZE),
-    eg_pdf_lib:moveAndShow(PDF, X+32+293.3, 187+Y-10-15, OCR),
+    eg_pdf:moveAndShow(PDF, X+32+293.3, 187+Y-10-15, OCR),
 
     Checksum = chk10(trunc(Amount*100)),
     Kr = trunc(Amount),
@@ -352,7 +356,7 @@ bg_avi_ocrline(PDF, X, Y, BGNr, Amount, OCR) ->
 	    io_lib:format("H  # ~25.s #~8.w ~2.0.0w   ~p >~25.s#41#    ",
 			  [OCR, Kr, Ore, Checksum, BGNr2])),
     %% Width = eg_pdf:get_string_width(PDF, ?OCRFONT, ?OCRSIZE, Txt),
-    eg_pdf_lib:moveAndShow(PDF, X+5, 48.2+Y, Txt).
+    eg_pdf:moveAndShow(PDF, X+5, 48.2+Y, Txt).
 
 to_mac(Str) ->
     F = fun($å) -> 8#214;
