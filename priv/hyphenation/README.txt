@@ -27,23 +27,11 @@ __How to add additional Hyphenation rules for new country/language ?__
   e.g. "hyphen_sv_SE.dic" where sv = the Swedish language and 
   SE = Sweden the country. See iso3166 and iso639 for the codes to use.
 
-* eg_mk_hyphen.erl needs an additional start/1 call and additional start/1 
-  clause for the new language dic.
-
-* Additional rules must also be added in the Makefile.
-- add an entry in ERL_OBJECTS += ....
-- add an eg_hyphen_rules_*.erl: ... entry calling the proper 
-  eg_mk_hyphen:start/1 clause
-- add a ../ebin/eg_hyphen_rules_*.beam: ... entry 
-- add eg_hyphen_rules_*.erl to the clean target
-
 * You might also want to add a entry in eg_hyphenate:test/1 to check how well
   the hyphenation rules work for the new language.
 
 Note: The .dic support is still somewhat hackish (2009-08-07), there are 
       several things that can be done to improve it.
-    - Support loading any .dic file in "../hyphenation/" without having to 
-      update Makefile and .erl files.
     - Check that erlguten can truely handle the dic files fully, 
       hyphen_fi_FI.dic has some rules with spaces in them which will probably 
       not be used as erlguten seams to mostly pass individual words (space 
