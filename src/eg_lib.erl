@@ -102,10 +102,6 @@ priv_dir() ->
 %%  Convert a sh style regexp into a full AWK one. The main difficulty is
 %%  getting character sets right as the conventions are different.
 
--spec sh_to_awk(ShRegExp) -> AwkRegExp when
-      ShRegExp :: string(),
-      AwkRegExp :: string().
-
 sh_to_awk(Sh) -> "^(" ++ sh_to_awk_1(Sh).	%Fix the beginning
 
 sh_to_awk_1([$*|Sh]) ->				%This matches any string
