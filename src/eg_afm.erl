@@ -181,7 +181,7 @@ mk_Make(FontMap) ->
 	   "OBJECTS=$(MODULES:%=../../ebin/%.beam)\n",
 	   "all: $(OBJECTS)\n\n",
 	   "../../ebin/%.beam: %.erl\n",
-	   "\terlc -o ../../ebin $<\n\n",
+	   "\terlc +debug_info -o ../../ebin $<\n\n",
 	   "clean:\n",
 	   "\trm -f $(OBJECTS) Makefile *.erl *.pfb\n\n"
 	  ],
