@@ -285,9 +285,15 @@ force_split(Str, StrLen, Len, GLen, Font, PointSize) ->
 %% Len = 1000th pt
 fits(Str, Len, GLen, Font, PointSize) ->
     HStr = lists:sublist(Str, GLen),
-    HWLen = misc:ceiling(eg_richText:width_of(Font, PointSize, HStr)),
+    HWLen = ceiling(eg_richText:width_of(Font, PointSize, HStr)),
     HWLen =< Len.
 
+%% round a number to next higher integer
+ceiling(N) when is_number(N) ->
+    case trunc(N) of
+        I when I < N -> I + 1;
+        I -> I
+    end.
 
 %% return: integer() >= 1, number of initial Str letters to use 
 %% split even if a single letter (+ hyphen) is > Len (doesn't fit in Len)
