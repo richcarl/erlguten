@@ -122,7 +122,7 @@ page_opt({A,B}) ->
 %% KidRefs = [ number() ]
 %% ProcSet = imageb | imagec | imagebc
 %% @doc Creates a Pages (Page Tree) dictionary
-page_tree(KidRefs, FontsPtr, XObjectsPtr, MediaBox = {rect,{A,B,C,D}}, 
+page_tree(KidRefs, FontsPtr, XObjectsPtr, MediaBox = {rect,{_A,_B,_C,_D}}, 
 	  ProcSet ) ->
     ImProcSet = case ProcSet of
 		    imagebc -> [{name, "ImageB"},{name, "ImageC"}];
@@ -174,7 +174,7 @@ get_page(PageNo, Objects) ->
 get_page_contents(PageObj, Objects) ->
     PageDict = eg_pdf_lib:pdf_item(PageObj),
     case eg_pdf_lib:find_in_dict("Contents", PageDict) of
-	{ptr, I, J} = Ptr ->
+	{ptr, _I, _J} = Ptr ->
 	    {value, Object} = eg_pdf_lib:search_object(Ptr, Objects),
 	    Object;
 	PtrList ->

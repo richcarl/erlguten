@@ -220,7 +220,7 @@ bezier_y({X1,Y1}, {X3,Y3})->
     [n2s([X1,Y1,X3,Y3]), " y\n"].
     
 
-arc(X1,Y1,X2,Y2)->
+arc(_X1,_Y1,_X2,_Y2)->
     tobedone.
 
 circle({X,Y}, R)->
@@ -576,7 +576,7 @@ image1(FilePath, {height, H}) ->
     image1(FilePath, {size,{undefined,H}});
 image1(FilePath, {W, H}) when is_integer(W), is_integer(H)->
     image1(FilePath, {size,{W,H}});
-image1(FilePath, {size,Size})->
+image1(_FilePath, {size,_Size})->
 %%    PID ! {image, FilePath, Size}.
     to_be_done.
 

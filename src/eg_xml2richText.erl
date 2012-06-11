@@ -114,7 +114,7 @@ normalise_inline({raw,Str}, FontMap, L) ->
     normalise_tag(default, Str, FontMap, L);
 normalise_inline({Tag, _, [{raw,Str}]}, FontMap, L) ->
     normalise_tag(Tag, Str, FontMap, L);
-normalise_inline({Tag, _, []}, FontMap, L) ->
+normalise_inline({_Tag, _, []}, _FontMap, L) ->
     L.
 
 normalise_tag(Tag, Str, FontMap, L) ->
@@ -168,7 +168,7 @@ normalise_str([H|T], Face, L, WS) ->
 	    Word = eg_richText:mk_word(Face, Str),
 	    normalise_str(T1, Face, [Word|L], WS)
     end;
-normalise_str([], _, L, WS) ->
+normalise_str([], _, L, _WS) ->
     L.
 
 %% End Normalise XML

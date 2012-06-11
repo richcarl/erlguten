@@ -114,10 +114,10 @@ from Mr. C. Computer.").
 richText2str({richText, L}) ->
     eg_pdf_op:flatten(lists:map(fun inline2str/1, L)).
 
-inline2str({word,_,Face,Str}) -> Str;
+inline2str({word,_,_Face,Str}) -> Str;
 inline2str({space,_, _}) -> " ";
 inline2str({nl,_}) -> "\n";
-inline2str({fixedStr,_,Face,Str}) -> Str;
+inline2str({fixedStr,_,_Face,Str}) -> Str;
 inline2str(_) -> "".
 
 %% ----------------------------------------------------------------------------
@@ -185,7 +185,7 @@ skip_white(X=[H|T]) ->
 skip_white([]) ->
     [].
 
-collect_word(X=[$\n|T], L) ->
+collect_word(X=[$\n|_T], L) ->
     {lists:reverse(L), X};
 collect_word(X=[H|T], L) ->
     case is_white(H) of
@@ -235,7 +235,7 @@ is_word(X) ->    element(1, X) == word.
     
 is_nl(X) -> element(1, X) == nl.
 
-is_breakable({word,_,Face,Str}) -> Face#face.breakable;
+is_breakable({word,_,Face,_Str}) -> Face#face.breakable;
 is_breakable(_) -> false.
 
 %% Make a new word based on the face of an old word
@@ -264,7 +264,7 @@ width({nl,_})           -> 0;
 width({fixedStr,W,_,_}) -> W.
 
 font({word,_,F,_})     -> F#face.font;
-font({opaque,_,F})     -> unknown;
+font({opaque,_,_F})     -> unknown;
 font({space,_,F})      -> F#face.font;
 font({nl,F})           -> F#face.font;
 font({fixedStr,_,F,_}) -> F#face.font.
@@ -272,22 +272,22 @@ font({fixedStr,_,F,_}) -> F#face.font.
 fontFromFace(F) -> F#face.font.
 
 color({word,_,F,_})     -> F#face.color;
-color({opaque,_,F})     -> unknown;
+color({opaque,_,_F})     -> unknown;
 color({space,_,F})      -> F#face.color;
 color({nl,F})           -> F#face.color;
 color({fixedStr,_,F,_}) -> F#face.color.
 
 pointSize({word,_,F,_})     -> F#face.pointSize;
-pointSize({opaque,_,F})     -> unknown;
+pointSize({opaque,_,_F})     -> unknown;
 pointSize({space,_,F})      -> F#face.pointSize;
 pointSize({nl,F})           -> F#face.pointSize;
 pointSize({fixedStr,_,F,_}) -> F#face.pointSize.
 
-classify_inline({word,W,_,_})     -> word;
-classify_inline({opaque,W,_})     -> opaque;
-classify_inline({space,W,_})      -> space;
+classify_inline({word,_W,_,_})     -> word;
+classify_inline({opaque,_W,_})     -> opaque;
+classify_inline({space,_W,_})      -> space;
 classify_inline({nl,_})           -> nl;
-classify_inline({fixedStr,W,_,_}) -> fixedStr.
+classify_inline({fixedStr,_W,_,_}) -> fixedStr.
 
 string({word,_,_,S})     -> S;
 string({fixedStr,_,_,S}) -> S;

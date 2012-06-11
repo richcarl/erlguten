@@ -98,7 +98,7 @@ delete_object(Key, Objects) ->
 %% Object = pdfobject()
 %% @doc Returns a copy of Objects1 with Objects added or, if the object's 
 %% reference already is present, replacing the old object.
-store_object({Key, PDFItem} = Object, Objects) ->
+store_object({Key, _PDFItem} = Object, Objects) ->
    case lists:keymember(Key, 1, Objects) of
 	true ->
 	    lists:keyreplace(Key, 1, Objects, Object);
@@ -132,7 +132,7 @@ pdf_item(Key, Objects) ->
 
 %% @spec pdf_item(Object::pdfobject()) -> pdftype()
 %% @doc Returns the PDFItem for the Object.
-pdf_item({ Key, Value}) ->
+pdf_item({ _Key, Value}) ->
     Value.
 
 
@@ -152,7 +152,7 @@ find_in_dict(Key, {dict,Dict})->
 %% Value = pdftype()
 %% @doc Stores a new item in a PDF dictionary, replacing the old
 %% one if it exists.
-store_in_dict({Key, Value} = A, {dict, D}) ->
+store_in_dict({Key, _Value} = A, {dict, D}) ->
     case lists:keymember(Key, 1, D) of 
 	true ->
 	    {dict, lists:keyreplace(Key,1,D,A) }; 

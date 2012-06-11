@@ -170,7 +170,7 @@ exists(File) ->
 	    false
     end.
 
-first([X]) ->
+first([_X]) ->
     [];
 first([H|T]) ->
     [H|first(T)].
@@ -193,7 +193,7 @@ mk_eg_font_map(FontMap) ->
     All = lists:map(fun(I) -> element(2, I) end, FontMap),
     Str = ["-module(eg_font_map).\n",
 	   "-export([handler/1,all_fonts/0]).\n",
-	   lists:map(fun({Mod,Font,I}) ->
+	   lists:map(fun({Mod,Font,_I}) ->
 		       ["handler(\"",Font,"\")-> ", Mod,";\n"]
 	       end, FontMap),
 	   "handler(_) -> undefined.\n",
@@ -221,7 +221,7 @@ parse(F,Index) ->
     {First,Last,Widths} = normalise_widths(Cw1),
     %% io:format("First=~p last=~p ~n",[First,Last]),
     Kern1 = lists:map(fun({XY,_,W}) -> {XY, W} end, Kern),
-    Ascender = get_val(L, "Ascender"),
+    _Ascender = get_val(L, "Ascender"),
     T = #afm2{baseFont=Fn, widths=Widths, firstChar=First,
 	      lastChar=Last, kernPairs=Kern1,
 	      ascender=get_val(L, "Ascender"),
@@ -287,7 +287,7 @@ mk_kern([{{I,J},K}|T]) ->
 mk_kern([]) ->
     ["kern(_,_) -> 0.\n"].
 
-widths_2_erl(N, []) ->
+widths_2_erl(_N, []) ->
     ["width(_)->unknown.\n"];
 widths_2_erl(N, [0|T]) ->
     widths_2_erl(N+1, T);
@@ -298,7 +298,7 @@ widths_2_erl(N, [H|T]) ->
 
 normalise_widths(Pairs) ->
     P1 = lists:sort(Pairs),
-    {First,Width} = hd(P1),
+    {First,_Width} = hd(P1),
     {Last, Ws} = gather(First, P1, []),
     {First,Last, Ws}.
 
@@ -306,7 +306,7 @@ gather(X, [{X,W}], L) ->
     {X, lists:reverse([W|L])};
 gather(X, [{X,W}|T], L) ->
     gather(X+1, T, [W|L]);
-gather(X, Z=[{Y,W}|T], L) when Y > X ->
+gather(X, Z=[{Y,_W}|_T], L) when Y > X ->
     gather(X+1,Z,[0|L]).
 
 get_fixed_pitch(L) ->
@@ -392,7 +392,7 @@ parse_kerning({_,Str="KPX " ++ _}, Cw) ->
 	    io:format("UUgh:~s:~p~n",[Str,Other]),
 	    no
     end;
-parse_kerning(_, Cw) ->
+parse_kerning(_, _Cw) ->
     no.
 
 charno(C, Cw) ->
@@ -410,7 +410,7 @@ get_char_widths(L, Enc) ->
 	end,
     lists:foldl(F, [], L).
 
-add_char({Line,Str= "C " ++ _}, Acc, Enc) ->
+add_char({_Line,Str= "C " ++ _}, Acc, Enc) ->
     case parse_char_data(Str, Enc) of
 	{-1,_,_} ->
 	    Acc;
@@ -428,7 +428,7 @@ parse_char_data(S, "FontSpecific") ->
 	Other ->
 	    io:format("wot is:~s:~pn",[S, Other])
     end;
-parse_char_data(S, Enc) ->
+parse_char_data(S, _Enc) ->
     case string:tokens(S, "\s\r\n") of
 	["C",_,";","WX",W,";","N",Name,";"|_] ->
 	    C = name_to_char(Name),
@@ -587,7 +587,7 @@ str2lines([H|T], Line, C, L) ->
         $\n -> str2lines(T, Line+1,[],[{Line,lists:reverse([$\n|C])}|L]);
         _   -> str2lines(T, Line,  [H|C], L)
     end;
-str2lines([], Line, [], L) ->
+str2lines([], _Line, [], L) ->
     lists:reverse(L);
 str2lines([], Line, C, L) ->
     lists:reverse([{Line,lists:reverse(C)}|L]).

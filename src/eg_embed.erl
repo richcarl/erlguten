@@ -55,7 +55,7 @@ embed(F) ->
 
 parse_pfb(F) ->
     {ok, Bin} = file:read_file(F),
-    L = parse(Bin).
+    _L = parse(Bin).
 
 parse(<<128,3>>) ->
     [];

@@ -119,7 +119,7 @@ split([], HyphenRules) -> {lists:reverse(HyphenRules), []};
 %% hyphen rules and rule exceptions found
 split(["\\hyphenation" | ExcpL], HyphenRules) -> {lists:reverse(HyphenRules), 
 						 ExcpL};
-split(["\\" ++ _ | ExcpL], _) -> throw(unkown_dic_syntax);
+split(["\\" ++ _ | _ExcpL], _) -> throw(unkown_dic_syntax);
 split([HyphenRule | R], HyphenRules) -> split(R, [HyphenRule | HyphenRules]).
 
 

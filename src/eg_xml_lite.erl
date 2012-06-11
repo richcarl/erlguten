@@ -99,7 +99,7 @@ xml2bin(In, Out) ->
 	    case parse_all_forms(binary_to_list(Bin), 0) of
 		{ok, Tree, _} ->
 		    file:write_file(Out, term_to_binary(Tree));
-		E = {error, X} ->
+		E = {error, _X} ->
 		    E;
 		{more, _} ->
 		    {error, incomplete}
@@ -139,9 +139,9 @@ top_parse_loop(Str, Line, L) ->
 		false ->
 		    top_parse_loop(Str1, Line1, [Form|L])
 	    end;
-	E={error, Why} ->
+	E={error, _Why} ->
 	    E;
-	{more, Cont} ->
+	{more, _Cont} ->
 	    {error, more_data_expected}
     end.
 
@@ -157,7 +157,7 @@ parse(State, Str, Line) ->
 parse_cont(State, Cont, Str) ->
     tokenise_result(eg_xml_tokenise:continue(Cont, Str), State).
 
-tokenise_result({error, Line, What}, State) ->
+tokenise_result({error, Line, What}, _State) ->
     {error,{errorInLine,Line,What}};
 tokenise_result({done, Token, Str1, Line1}, State) ->
     %% io:format("Token= ~p Str1=~p Line1=~p~n",[Token, Str1, Line1]),
@@ -183,7 +183,7 @@ tokenise_result({more, Cont}, State) ->
 step_parser(Stack, {sTag, _, Tag, Args}) ->
     %% Push new frame onto the stack
     {more, [{Tag, lists:sort(Args), []}|Stack]};
-step_parser([{Tag,Args,C}|L], P={Flat, _, D}) when Flat == pi;
+step_parser([{Tag,Args,C}|L], _P={Flat, _, D}) when Flat == pi;
 						   Flat == raw;
 						   Flat == cdata;
 						   Flat == comment;
@@ -196,7 +196,7 @@ step_parser([{Tag, Args, C}|L], {eTag, _, Tag}) ->
     %% Now we normalise the arguments that were found
     C1 = deblank(lists:reverse(C)),
     pfinish([{Tag,Args,C1}|L]);
-step_parser([{STag, Args, C}|L], {eTag, _, Tag}) ->
+step_parser([{STag, _Args, _C}|_L], {eTag, _, Tag}) ->
     {error,{badendtagfound,Tag,starttagis,STag}};
 step_parser([], {raw, _, S}) ->
     case all_blanks(S) of
@@ -214,7 +214,7 @@ step_parser(S, I) ->
 pfinish([X])                 -> {done, {xml, atomize(X)}};
 pfinish([H1,{Tag,Args,L}|T]) -> {more, [{Tag,Args,[H1|L]}|T]}.
 
-deblank(S=[{raw, C}]) -> S;
+deblank(S=[{raw, _C}]) -> S;
 deblank(X) -> deblank1(X).
 
 deblank1([H={raw,X}|T]) ->
@@ -254,7 +254,7 @@ pp({Node,Args,L}, Level) ->
      indent(Level),"</",S,">\n"];
 pp({raw,Str}, Level) ->
     [indent(Level),Str,"/n"];
-pp(X, Level) ->
+pp(X, _Level) ->
     io:format("How do I pp:~p~n",[X]),
     ["oops"].
     
@@ -275,5 +275,5 @@ name(X) ->
 indent(0) -> [];
 indent(N) -> [$ |indent(N-1)].
 
-reent_test(O)->a.
+reent_test(_O)->a.
 

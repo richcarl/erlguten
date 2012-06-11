@@ -61,7 +61,7 @@ batch([pack,A,B,C]) ->
 batch([unpack,A]) ->
     unpack(atom_to_list(A)),
     erlang:halt();
-batch(A) ->
+batch(_A) ->
     io:format("Usage pack In File Out | Unpack Pdf~n",[]),
     erlang:halt().
 
@@ -159,12 +159,12 @@ get_tables(Pdf) ->
     Trailer    = get_trailer(Pdf, TrailerPtr),
     {XrefPtr, Xref, Trailer}.
 
-get_xref_entry({Block,n,Pos,G}, Xref, Pdf) ->
+get_xref_entry({Block,n,Pos,_G}, Xref, Pdf) ->
     io:format("getting block ~p at ~p~n", [Block, Pos]),
     O = read_object(Pdf, Pos, Xref),
     io:format("Block=~p~n",[O]),
     O;
-get_xref_entry(X, _, _) ->
+get_xref_entry(_X, _, _) ->
     %io:format("Here X=~p~n",[X]),
     void.
 
@@ -176,7 +176,7 @@ get_object(Pdf, {ptr,I,J}, Xref) ->
 
 find_obj_ptr(I, J, [P={I,n,_,J}|_]) -> P;
 find_obj_ptr(I, J, [_|T])           -> find_obj_ptr(I, J, T);
-find_obj_ptr(I, J, [])              -> exit(pointer_error).
+find_obj_ptr(_I, _J, [])              -> exit(pointer_error).
 
 %% Objects
 %%  N M obj ... endobj
@@ -193,7 +193,7 @@ read_object(F, Pos, Xref) ->
 			    io:format("Read: ~p ~p ~p~n",[I,J,Obj]),
 			    %% io:format("SSSS=~p~n",[Str4]),
 			    read_after_object(I, J, Obj, F, Pos4, Str4, Xref);
-			Other ->
+			_Other ->
 			    exit({pdf,expected,keword, obj, Pos2})
 		    end;
 		_ ->
@@ -203,7 +203,7 @@ read_object(F, Pos, Xref) ->
 	    exit({pdf,expected,integer, Pos})
     end.
 
-read_after_object(I, J, Obj, F, Pos, Str, Xref) ->
+read_after_object(I, J, Obj, F, Pos, _Str, Xref) ->
     case read_obj(Pos, F) of
 	{endobj, _, _} ->
 	    {{obj,I,J},Obj};
@@ -364,18 +364,18 @@ find_trailer_pointer(">>" ++ T, Level, Pos, F) ->
     find_trailer_pointer(T, Level+1, Pos-2, F);
 find_trailer_pointer("<<" ++ T, Level, Pos, F) ->
     find_trailer_pointer(T, Level-1, Pos-2, F);
-find_trailer_pointer("reliart" ++ T, 0, Pos, F) ->
+find_trailer_pointer("reliart" ++ _T, 0, Pos, _F) ->
     %% yes
     Pos - 7;
 find_trailer_pointer(Str, Level, Pos, F) when length(Str) < 8 -> 
     %% Need yet more stuff
     Data = read_str(F, Pos - 512, 512),
     find_trailer_pointer(Str ++ lists:reverse(Data), Level, Pos, F);
-find_trailer_pointer([H|T], 0, Pos, F) ->
+find_trailer_pointer([_H|T], 0, Pos, F) ->
     find_trailer_pointer(T, 0, Pos-1, F);
-find_trailer_pointer([H|T], Level, Pos, F) when Level > 0  ->
+find_trailer_pointer([_H|T], Level, Pos, F) when Level > 0  ->
     find_trailer_pointer(T, Level, Pos-1, F);
-find_trailer_pointer([], Level, Pos, F) ->
+find_trailer_pointer([], Level, _Pos, _F) ->
     exit({corrupt_pdf,find_trailer_pointer, Level}).
 
 %%----------------------------------------------------------------------
@@ -443,14 +443,14 @@ read_obj(Str, Pos, F) ->
 	    end
     end.
 
-get_comment(Str, Pos, F) ->
+get_comment(_Str, _Pos, _F) ->
     exit({nyi,get_comment}).
 
 get_hex_string(Str, Pos, F) -> get_hex_string(Str, Pos, F, []).
 
-get_hex_string(">" ++ Str, Pos, F, L) ->
+get_hex_string(">" ++ Str, Pos, _F, L) ->
     {{string, lists:reverse(L)}, Str, Pos+1};
-get_hex_string([X,$>|Str], Pos, F, L) ->
+get_hex_string([X,$>|Str], Pos, _F, L) ->
     {{string, lists:reverse([hex2byte(X,$0)|L])}, Str, Pos+2};
 get_hex_string([X,Y|T], Pos, F, L) ->
     get_hex_string(T, Pos+2, F, [hex2byte(X,Y)|L]);
@@ -515,7 +515,7 @@ parse_array(T) ->
 
 gs(Str, Pos, F) -> gs(Str, Pos, F, 0, []).
     
-gs([$)|T], Pos, F, 0, L)   -> {{string, lists:reverse(L)}, T, Pos+1};
+gs([$)|T], Pos, _F, 0, L)   -> {{string, lists:reverse(L)}, T, Pos+1};
 gs([$)|T], Pos, F, Lev, L) -> gs(T, Pos+1, F, Lev - 1, [$)|L]);
 gs([$(|T], Pos, F, Lev, L) -> gs(T, Pos+1, F, Lev + 1, [$(|L]);
 gs([$\\,$n|T], Pos, F, Lev, L)  -> gs(T, Pos+2, F, Lev, [$\n|L]);
@@ -608,7 +608,7 @@ get_int_or_float(Str, Pos, F) -> gi(Str, Pos, F, int, []).
 
 gi([$+|T], Pos, F, Type, L) -> gi(T, Pos+1, F, Type, [$+|L]);
 gi([$-|T], Pos, F, Type, L) -> gi(T, Pos+1, F, Type, [$-|L]);
-gi([$.|T], Pos, F, Type, L) -> gi(T, Pos+1, F, float, [$.|L]);
+gi([$.|T], Pos, F, _Type, L) -> gi(T, Pos+1, F, float, [$.|L]);
 gi([H|T], Pos, F, Type, L) when ?IN(H, $0, $9) ->
     gi(T, Pos+1, F, Type, [H|L]);
 gi([], Pos, F, Type, L) ->
@@ -616,7 +616,7 @@ gi([], Pos, F, Type, L) ->
 	eof -> gi_final(Type, lists:reverse(L), Pos, "");
 	Str -> gi(Str, Pos, F, Type, L)
     end;
-gi(Str, Pos, F, Type, L) ->
+gi(Str, Pos, _F, Type, L) ->
     gi_final(Type, lists:reverse(L), Pos, Str).
 
 gi_final(int, L, Pos, Str) ->
@@ -642,7 +642,7 @@ hex2byte(H1, H2) -> hex2int(H1) * 16 + hex2int(H2).
 hex2int(X) when ?IN(X, $0, $9) -> X - $0;
 hex2int(X) when ?IN(X, $a, $f) -> X - $a + 10;
 hex2int(X) when ?IN(X, $A, $F) -> X - $A + 10;
-hex2int(X) -> exit({pdf,bad_hex_digit_in_string}).
+hex2int(_X) -> exit({pdf,bad_hex_digit_in_string}).
 
 
 %%----------------------------------------------------------------------
@@ -673,7 +673,7 @@ unpack(File) ->
     {_, Xref, Trailer} = get_tables(Pdf),
     Info = from_trailer(Trailer, "Info"),
     case get_object(Pdf, Info, Xref) of
-	{_, _, {stream,Len,Bin,Dict}} ->
+	{_, _, {stream,_Len,Bin,Dict}} ->
 	    {string, "erlangAddedFile"} = from_dict("Comment", Dict),
 	    case (catch binary_to_term(Bin)) of
 		{erlpdf, FileName, Bin2} ->

@@ -198,7 +198,7 @@ first_break_line(All=[H|T], Sum, Len, L, SplitType) ->
 	    {{Sum, Len, lists:reverse(remove_leading_spaces(L))}, 
 	     remove_leading_spaces(All)}
     end;
-first_break_line([], Sum, Len, L, SplitType) ->
+first_break_line([], Sum, Len, L, _SplitType) ->
     {{Sum, Len, lists:reverse(remove_leading_spaces(L))}, []}.
 
 
@@ -263,9 +263,9 @@ safe_width(Val) ->
 
 %% return: integer() >= 1, number of initial Str letters to use 
 %% split even if a single letter is > Len (doesn't fit in Len)
-force_split(Str, StrLen, Len, GLen, Font, PointSize) when GLen =< 0 ->
+force_split(_Str, _StrLen, _Len, GLen, _Font, _PointSize) when GLen =< 0 ->
     1;
-force_split(Str, StrLen, Len, GLen, Font, PointSize) when GLen >= StrLen ->
+force_split(_Str, StrLen, _Len, GLen, _Font, _PointSize) when GLen >= StrLen ->
     StrLen;
 force_split(Str, StrLen, Len, GLen, Font, PointSize) ->
     case fits(Str, Len, GLen, Font, PointSize) of
@@ -297,9 +297,9 @@ ceiling(N) when is_number(N) ->
 
 %% return: integer() >= 1, number of initial Str letters to use 
 %% split even if a single letter (+ hyphen) is > Len (doesn't fit in Len)
-hyphen_split(Str, StrLen, Len, GLen, Font, PointSize) when GLen =< 0 ->
+hyphen_split(_Str, _StrLen, _Len, GLen, _Font, _PointSize) when GLen =< 0 ->
     1;
-hyphen_split(Str, StrLen, Len, GLen, Font, PointSize) when GLen >= StrLen ->
+hyphen_split(_Str, StrLen, _Len, GLen, _Font, _PointSize) when GLen >= StrLen ->
     StrLen;
 hyphen_split(Str, StrLen, Len, GLen, Font, PointSize) ->
     case fits(Str ++ "-", Len, GLen, Font, PointSize) of
@@ -382,14 +382,14 @@ collect_line([], L) ->
 justify(Text, Widths, Rules) ->
     %% dbg_io("justify Text=~p widths=~p~n",[Text,Widths]),
     case iterate([{0,Text,Widths,[],Rules}], none, 20) of
-	{Cost, Lines, Widths1, Spill, Rules} ->
+	{_Cost, Lines, Widths1, Spill, Rules} ->
 	    Lines1 = lists:map(fun(I) -> {richText, I} end, Lines),
 	    {Lines1, Widths1, {richText, Spill}};
 	none ->
 	    impossible
     end.
 
-iterate([], Best, Max) ->
+iterate([], Best, _Max) ->
     Best;
 iterate(L, Best, Max) ->
     L1 = next_generation(L),
@@ -442,9 +442,9 @@ finalise([H|T], Best, L) ->
 finalise([], Best, L) ->
     {Best, L}.
 
-trim(0, L)     -> [];
+trim(0, _L)     -> [];
 trim(N, [H|T]) -> [H|trim(N-1, T)];
-trim(N, [])    -> [].
+trim(_N, [])    -> [].
 
 %% ----------------------------------------------------------------------------
 
@@ -514,7 +514,7 @@ worse_break_line(All=[H|T], Len, L) ->
 	false ->
 	    worse_break_line(T, Len, [H|L])
     end;
-worse_break_line([], Len, L) ->
+worse_break_line([], _Len, L) ->
     {lists:reverse(L), []}.
 
 filter_candidates(Partitions, Len, Q) ->
@@ -582,7 +582,7 @@ filter_candidates(Partitions, Len, Q) ->
 %% 1) Before does not begin with a space
 %% 2) After  does begin with a space
 
-break_before([], After, Len, Q, L, _) ->
+break_before([], After, _Len, _Q, L, _) ->
     check_after_invarient(After),
     L;
 break_before(Before, After, Len, Q, L0, Rules) ->
@@ -668,7 +668,7 @@ make_partitions([H|T], Rules, Before, Final) ->
 	false ->
 	    make_partitions(T, Rules, [H|Before], Final)
     end;
-make_partitions([], Rules, _, Final) ->
+make_partitions([], _Rules, _, Final) ->
     Final.
 
 %% extract segment x y S a b c -> {[x,y], [S,a,b,c]}

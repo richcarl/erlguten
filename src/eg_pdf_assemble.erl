@@ -173,7 +173,7 @@ make_width(_, M, _, _) ->
     M:widths().
 
 mkFontDescriptor(M, Embedded, I) ->
-    {X1,X2,X3,X4} = M:fontBBox(),
+    {X1,X2,X3,_X4} = M:fontBBox(),
     %% io:format("Flags FIXED to 6 ...~n"),
     FontBBox = [X1,X2,X3,X3],
     D0 = [{"Type",{name,"FontDescriptor"}},
@@ -246,7 +246,7 @@ mkInfo(I) ->
 %% L = [int()] = list of objects representing pages
 
 
-mkPageTree(L, Fonts, XObjects, MediaBox = {A,B,C,D}, ProcSet ) ->
+mkPageTree(L, Fonts, XObjects, _MediaBox = {A,B,C,D}, ProcSet ) ->
     ImProcSet = case ProcSet of
 		    {imageb,imagec} -> [{name, "ImageB"},{name, "ImageC"}];
 		    {imageb,_} -> [{name, "ImageB"}];
@@ -305,7 +305,7 @@ add_xref(F, Objs) ->
     {ok, P} = file:position(F, cur),
     XrefStart = P,
     L  = ["xref\n0 ",eg_pdf_op:i2s(length(Objs)+1),"\n",xref(0,"65535 f")|
-	  lists:map(fun({I,Pos}) -> xref(Pos,"00000 n") end, Objs)],
+	  lists:map(fun({_I,Pos}) -> xref(Pos,"00000 n") end, Objs)],
     file:write(F, L),
     XrefStart.
 
@@ -429,7 +429,7 @@ handle_setpage(Pages, PageNo, Current, Stream)->
     NewStream = orddict:fetch(PageNo, NewPageDict),
     {NewPageDict,NewStream}.
 
-handle_newpage(Pages,0,Stream)->
+handle_newpage(Pages,0,_Stream)->
     {Pages,1};
 handle_newpage(Pages, Current, Stream )->
     NewPageDict = orddict:store(Current,Stream, Pages),
@@ -437,18 +437,18 @@ handle_newpage(Pages, Current, Stream )->
 
 handle_export(PDFC)->
     %% io:format("~nHere handle_export:~p~n",[PDFC]),
-    MF = fun(K,V1,V2) ->
+    MF = fun(_K,V1,V2) ->
 		 {script, V1, V2}
 	 end,
     Merged = orddict:merge(MF, PDFC#pdfContext.pages,
 			   PDFC#pdfContext.scripts),
-    Pages =  lists:map(fun({Key,{script,Val,S}}) ->
+    Pages =  lists:map(fun({_Key,{script,Val,S}}) ->
 			       {page, Val, S};
-			  ({Key, Val}) ->
+			  ({_Key, Val}) ->
 			       {page, Val}
 		       end,
 		       Merged),
-    {Root, Ninfo, Os} = 
+    {_Root, Ninfo, Os} = 
 	build_pdf(PDFC#pdfContext.info, 
 		  PDFC#pdfContext.fonts,
 		  dict:to_list(PDFC#pdfContext.images),
@@ -488,7 +488,7 @@ handle_image(ImageDict, FilePath, Size, ProcSet)->
 	    Alias = "Im" ++ 
 		eg_pdf_op:i2s(dict:size(ImageDict) + 1),
 	    case eg_pdf_image:get_head_info(FilePath) of
-		{jpeg_head,{W1, H1, Ncomponents, Data_precision}} ->
+		{jpeg_head,{W1, H1, Ncomponents, _Data_precision}} ->
 		    NewDict =dict:store(FilePath,
 					#image{alias  = Alias,
                                                width  = W1,
@@ -518,8 +518,8 @@ set_size({undefined,H1},{W2,H2}) -> {trunc(H1*W2/H2),H1};
 set_size(Size1,_) -> Size1.
 
 %% Set the images for ProcSet
-imageBC(Ncomp,{B,C}) when Ncomp =< 2 -> {imageb,C};
-imageBC(Ncomp,{B,C}) when Ncomp > 2 -> {B,imagec}.
+imageBC(Ncomp,{_B,C}) when Ncomp =< 2 -> {imageb,C};
+imageBC(Ncomp,{B,_C}) when Ncomp > 2 -> {B,imagec}.
 
 
 

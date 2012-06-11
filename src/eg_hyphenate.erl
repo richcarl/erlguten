@@ -184,7 +184,7 @@ remove_singleton1([$-,H]) -> [H];
 remove_singleton1([H|T])  -> [H|remove_singleton1(T)];
 remove_singleton1([])     -> [].
 
-make_word([{Pos,C}|T], Pos, L) ->
+make_word([{Pos,_C}|T], Pos, L) ->
     [$-|make_word(T, Pos, L)];
 make_word(S=[{Pos,_}|_], Pos1, [H|T]) when Pos1 < Pos ->
     [H|make_word(S, Pos1+1, T)];
@@ -210,11 +210,11 @@ merge([{Pos,C}|T], L) -> merge(T, merge1(Pos, C, L)).
 
 merge1(Pos, C, [])                       -> [{Pos,C}];
 merge1(Pos, C, [{Pos,C1}|T]) when C > C1 -> [{Pos,C}|T];
-merge1(Pos, C, [{Pos,C1}|T])             -> [{Pos,C1}|T];
+merge1(Pos, _C, [{Pos,C1}|T])             -> [{Pos,C1}|T];
 merge1(Pos, C, [H|T])                    -> [H|merge1(Pos, C, T)].
 
 keep_odd(L) ->    
-    lists:filter(fun({Pos,Count}) -> odd(Count) end, L).
+    lists:filter(fun({_Pos,Count}) -> odd(Count) end, L).
 
 odd(X) ->
     (X rem 2) == 1.

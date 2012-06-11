@@ -522,7 +522,7 @@ paper_size(usLetter) ->
     {612, 792}.
 
 show_grid(PDF, Paper) ->
-    {PaperWidth, PaperHeight} = paper_size(Paper),
+    {_PaperWidth, _PaperHeight} = paper_size(Paper),
     %% Top = PaperHeight - 10,
     Top = 825, % hack
     Bottom = 10,
@@ -533,7 +533,7 @@ show_grid(PDF, Paper) ->
     vlines(PDF, Left, Right, Top, Bottom),
     hlines(PDF, Left, Right, Top, Bottom).
 
-hlines(PDF, Left, Right, Top, Bottom) ->
+hlines(PDF, Left, Right, Top, _Bottom) ->
     diter(Top,25,10,
 	  fun(Y) ->
 		  %% eg_pdf:set_fill_gray(PDF,1.0),
@@ -546,7 +546,7 @@ hlines(PDF, Left, Right, Top, Bottom) ->
 		  true
 	  end).
 
-vlines(PDF, Left, Right, Top, Bottom) ->
+vlines(PDF, _Left, Right, Top, Bottom) ->
     diter(Right,25,10,
 	  fun(X) ->
 		  eg_pdf:line(PDF, X, Top, X, Top-20),
@@ -564,7 +564,7 @@ moveAndShow(PDF, X, Y, Str) ->
 
 %% downwards iterator
 
-diter(X, Inc, Stop, F) when X < Stop ->
+diter(X, _Inc, Stop, _F) when X < Stop ->
     true;
 diter(X, Inc, Stop, F) ->
     F(X), diter(X-Inc,Inc,Stop,F).
@@ -588,7 +588,7 @@ draw_box1(X1,Y1,Measure,Leading,MaxRows) ->
 	 end),
      " Q "].
 
-for(I, Max, F) when I > Max -> [];
+for(I, Max, _F) when I > Max -> [];
 for(I, Max, F)              -> [F(I)|for(I+1,Max,F)].
 
 line(X1,Y1,X2,Y2) -> [eg_pdf_op:i2s(X1)," ",eg_pdf_op:i2s(Y1)," m ",

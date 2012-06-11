@@ -123,7 +123,7 @@ destination(PageRef, {"FitBV", Left}) ->
 fonts(Fonts, Objects) ->
     Free0 = eg_pdf_lib:get_next_ref(Objects),
     Fonts1 = lists:map(fun(I) -> eg_font_map:handler(I) end, Fonts),
-    {Free,FontsPtr,O1s}  = mk_fonts(Fonts1, Free0, [], []),
+    {_Free,FontsPtr,O1s}  = mk_fonts(Fonts1, Free0, [], []),
     {FontsPtr, eg_pdf_lib:store_object(O1s, Objects)}.
 
 mk_fonts([], I, Fs, Os) -> 
@@ -205,7 +205,7 @@ make_width(_, M, _, _) ->
     M:widths().
 
 mkFontDescriptor(M, Embedded, I) ->
-    {X1,X2,X3,X4} = M:fontBBox(),
+    {X1,X2,X3,_X4} = M:fontBBox(),
     %% io:format("Flags FIXED to 6 ...~n"),
     FontBBox = [X1,X2,X3,X3],
     D0 = [{"Type",{name,"FontDescriptor"}},

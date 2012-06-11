@@ -117,7 +117,7 @@ flag(readonly)  -> 64.
 
 %% @spec new(Subtype, Rect) -> dict()
 %% Rect = {rect, {X,Y, Width, Height}}
-new(SubType, {rect,{X,Y,W,H}} = Rect)->
+new(SubType, {rect,{_X,_Y,_W,_H}} = Rect)->
     {dict,[{"Type",{name,"Annot"}},
 	   {"Subtype", subtype(SubType)}, 
 	   {"Rect", Rect }]}.

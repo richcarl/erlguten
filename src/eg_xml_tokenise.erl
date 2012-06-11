@@ -135,7 +135,7 @@ gab("["++T, "", Ln)        -> gab(T,"[", Ln);
 gab("-"++T, "-", Ln)       -> get_comment(T, [], Ln);
 gab("-"++T, "", Ln)        -> gab(T, "-", Ln);
 gab([], L, Ln)             -> {more, fun(Str) -> gab(Str, L, Ln) end};
-gab(Str, _, Ln) ->
+gab(_Str, _, Ln) ->
     {error, {line,Ln,"expecting comment, DOCTYPE of CDATA"}}.
     
 %%----------------------------------------------------------------------
@@ -219,7 +219,7 @@ is_tag_complete([])     -> false.
     
 is_tag_complete(Stop, [Stop|T]) -> is_tag_complete(T);
 is_tag_complete(Stop, [_|T])    -> is_tag_complete(Stop, T);
-is_tag_complete(Stop, [])       -> false.
+is_tag_complete(_Stop, [])       -> false.
 
 %%----------------------------------------------------------------------
 
@@ -307,14 +307,14 @@ get_args(S, L, Ln) ->
 
 get_AttVal([$"|T], Ln) -> collect_AttVal($", T, [], Ln);
 get_AttVal([$'|T], Ln) -> collect_AttVal($', T, [], Ln);
-get_AttVal([H|T], Ln) ->  error(Ln, "expecting ' or \"").
+get_AttVal([_H|_T], Ln) ->  error(Ln, "expecting ' or \"").
 
 collect_AttVal(S, [S|T], L, Ln)   -> {lists:reverse(L), T, Ln};
 collect_AttVal(S, [$\n|T], L, Ln) -> collect_AttVal(S, T, [$\n|L], Ln+1);
 collect_AttVal(S, [$r,$\n|T], L, Ln) -> collect_AttVal(S, T, [$\n|L], Ln+1);
 collect_AttVal(S, [$\r|T], L, Ln)  -> collect_AttVal(S, T, [$\n|L], Ln+1);
 collect_AttVal(S, [H|T], L, Ln)   -> collect_AttVal(S, T, [H|L], Ln);
-collect_AttVal(S, [], L, Ln)      -> error(Ln, "eof in attribute value").
+collect_AttVal(_S, [], _L, Ln)      -> error(Ln, "eof in attribute value").
 
 skip_white([$\s|T], Ln)  -> skip_white(T, Ln);
 skip_white([$\t|T], Ln)  -> skip_white(T, Ln);
@@ -377,7 +377,7 @@ get_amp([H|T], Amp, L, Ln1) when ?in(H, $a, $z) ->
     get_amp(T, [H|Amp], L, Ln1);
 get_amp([H|T], Amp, L, Ln1) when ?in(H, $A, $Z) -> 
     get_amp(T, [H|Amp], L, Ln1);
-get_amp([H|T], Amp, L, Ln) ->
+get_amp([_H|_T], _Amp, _L, Ln) ->
     error(Ln, "Error in entity:");
 get_amp([], Amp, L, Ln) ->
     {more, fun(S) -> get_amp(S, Amp, L, Ln) end}.
@@ -515,7 +515,7 @@ dump_token(O, {tagStart, Tag}) ->
     io:format(O, "<~s>", [Tag]);
 dump_token(O, {tagEnd, Tag}) ->
     io:format(O, "</~s>", [Tag]);
-dump_token(O, Other) ->
+dump_token(_O, Other) ->
     io:format("dump_token ????~p~n", [Other]).
 
 error(Ln, Term) ->

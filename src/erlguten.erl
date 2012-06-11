@@ -72,7 +72,7 @@ format(File) ->
     io:format("read:~p~n",[V]),
     Out = filename:rootname(File) ++ ".pdf",
     case V of
-	{error, W} ->
+	{error, _W} ->
 	    io:format("Error in source(~s):~p~n",[File, V]),
 	    exit(1);
 	[{pi,_},{xml,{data, [{"page", N}], Templates}}] ->
@@ -102,7 +102,7 @@ loop([{template,Args,Data}|T], Env) ->
 loop([], Env) ->
     Env.
 
-format_boxes([{Box,Args,Data}|T], Env) ->
+format_boxes([{Box,_Args,Data}|T], Env) ->
     Env1 = initialise_box(Box, Env),
     %% loop over the paragraphs in the Box
     Env2 = format_paragraphs(Data, Box, Env1),
@@ -132,12 +132,12 @@ format_paragraphs([{ParaTag,Args,Data}|T], Box, Env) ->
 	Env1 ->
 	    format_paragraphs(T, Box, Env1)
     end;
-format_paragraphs([], Box, E) ->
+format_paragraphs([], _Box, E) ->
     E.
 
 initialise_tagMap(Template, Box, E) ->
     Ts = case (catch Template:tagMap(Box)) of
-	    {'EXIT', Why} ->
+	    {'EXIT', _Why} ->
 		 io:format("error in tagmap for ~p:~p~n",
 			   [Template,Box]),
 		 io:format("using defualt~n"),
@@ -162,7 +162,7 @@ default_tagmap() ->
 
 instanciate_template(Template, E) ->
     #env{dict=Dict,page=Page,pdf=PDF} = E,
-    E1 = case dict:find(Key={initialised, Page, Template}, Dict) of
+    _E1 = case dict:find(Key={initialised, Page, Template}, Dict) of
 	     error ->
 		 io:format("calling first instanciation Page:~p "
 			   "Template: ~p ~n", [Page, Template]),
@@ -181,12 +181,12 @@ get_tag_schema(Tag, [H|T]) ->
 get_tag_schema(Tag, []) ->
     exit({missing,tag,Tag}).
 
-parse_flow([{"galley",F},{"name",Tag}]) ->
+parse_flow([{"galley",F},{"name",_Tag}]) ->
     case eg_xml_lite:parse_file(F) of
 	{error, E} ->
 	    io:format("Error in galley(~p):~p~n",[F, E]),
 	    exit(1);
-	L ->
+	_L ->
 	    %G = parse_galley(F, L),
 	    %get_box(Tag, G)
 	    true

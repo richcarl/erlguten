@@ -47,7 +47,7 @@ mk_images([{ImageURI, #image{alias=Alias}=Im}|T], I, Fs, E) ->
     O = mk_image(I, ImageURI, Im),
     mk_images(T, I+1, [{Alias,I}|Fs], [O|E]).
 
-mk_image(I, File, #image{alias=Alias, width=W, height=H}) ->
+mk_image(I, File, #image{alias=_Alias, width=W, height=H}) ->
     Image = read_image(File),
     case process_header(Image) of
 	{jpeg_head,{Width, Height, Ncomponents, Data_precision}} ->
@@ -106,7 +106,7 @@ get_head_info(File) ->
 %% JPEG file
 process_header( << 16#FF:8, ?SOI:8, Rest/binary >> )->
     process_jpeg( Rest );
-process_header(Any) ->
+process_header(_Any) ->
     image_format_not_yet_implemented_or_unknown.
 
 
@@ -129,21 +129,21 @@ process_jpeg( << ?SOF11:8,Rest/binary >> ) -> jpeg_sof(Rest);
 process_jpeg( << ?SOF13:8,Rest/binary >> ) -> jpeg_sof(Rest);
 process_jpeg( << ?SOF14:8,Rest/binary >> ) -> jpeg_sof(Rest);
 process_jpeg( << ?SOF15:8,Rest/binary >> ) -> jpeg_sof(Rest);
-process_jpeg( << ?SOS:8,Rest/binary >> ) ->[];
-process_jpeg( << ?EOI:8,Rest/binary >> ) -> jeoi; %% Tables only
-process_jpeg( << Any:8, Rest/binary >> )->process_jpeg(skip_marker(Rest));
+process_jpeg( << ?SOS:8,_Rest/binary >> ) ->[];
+process_jpeg( << ?EOI:8,_Rest/binary >> ) -> jeoi; %% Tables only
+process_jpeg( << _Any:8, Rest/binary >> )->process_jpeg(skip_marker(Rest));
 process_jpeg( << >> ) -> [].
 
 jpeg_sof ( Rest )->
     << Length:16, Data_precision:8, Height:16, Width:16, 
      Ncomponents:8, Rest2/binary >> = Rest, Complen = Ncomponents * 3,
     Length = Complen + 8, %% This is a guard that will cause an error exception
-    << SkipComponents:Complen/binary, Rest3/binary >> = Rest2,
+    << _SkipComponents:Complen/binary, _Rest3/binary >> = Rest2,
     {jpeg_head,{Width, Height, Ncomponents, Data_precision}}.
 %%     process_jpeg(Rest3)].
 
 skip_marker(Image)->
     << Length:16, Rest/binary >> = Image, 
     AdjLen = Length-2,
-    << Skip:AdjLen/binary, Rest2/binary >> = Rest,
+    << _Skip:AdjLen/binary, Rest2/binary >> = Rest,
     Rest2.
