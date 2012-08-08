@@ -81,7 +81,7 @@ format(File) ->
 	    PDF  = eg_pdf:new(),
 	    Env = #env{page=Page, pdf=PDF, dict=dict:new()},
 	    loop(Templates, Env),
-	    Serialised = eg_pdf:export(PDF),
+	    {Serialised, _PageNo} = eg_pdf:export(PDF),
 	    file:write_file(Out,[Serialised]),
 	    io:format("Created a file called:~p~n",[Out]),
 	    eg_pdf:delete(PDF);

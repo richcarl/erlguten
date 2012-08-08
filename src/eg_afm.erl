@@ -120,7 +120,7 @@ make() ->
 %% Just run pdf_afm_qdh:all() to build the font tables
 all_afms() ->
     {ok, F} = file:open(filename:join(eg_lib:priv_dir(), "font_locations"),
-                        read),
+                        [read]),
     L= read_locations(F, []),
     file:close(F),
     find_atms(L, []).
