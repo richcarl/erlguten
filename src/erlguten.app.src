@@ -3,6 +3,6 @@
 {application, erlguten,
  [{description, "System for high-quality typesetting"},
   {vsn, "%VSN%"},
-  {modules, [%MODULES%]},
+  {modules, ["%MODULES%"]},
   {registered, []},
   {applications, [kernel, stdlib]}]}.
