@@ -6,7 +6,7 @@ ERL=erl
 ERLC=erlc
 ERLC_FLAGS=+debug_info +nowarn_unused_vars
 PERL=perl
-APPSCRIPT = '$$vsn=shift; $$mods=""; while(@ARGV){ $$_=shift; s/^([A-Z].*)$$/\'\''$$1\'\''/; $$mods.=", " if $$mods; $$mods .= $$_; } while(<>) { s/%VSN%/$$vsn/; s/%MODULES%/$$mods/; print; }'
+APPSCRIPT = '$$vsn=shift; $$mods=""; while(@ARGV){ $$_=shift; s/^([A-Z].*)$$/\'\''$$1\'\''/; $$mods.=", " if $$mods; $$mods .= $$_; } while(<>) { s/%VSN%/$$vsn/; s/"%MODULES%"/$$mods/; print; }'
 
 HYPHEN_DICTS = $(wildcard priv/hyphenation/hyph_*.dic)
 HYPHEN_SOURCES = $(HYPHEN_DICTS:priv/hyphenation/hyph_%.dic=priv/src/eg_hyphen_rules_%.erl)
