@@ -1,8 +1,14 @@
 1) Install with make
 
-2) try the command
+2) Try the command
 
-   ./erlguten test1.xml
+   make test
 
-   This produces test1.pdf
+   This compiles test/eg_test1.erl, ... test/eg_test7.erl and runs them to
+   generate test/eg_test1.pdf, ... test/eg_test7.pdf. See these modules
+   for examples of how to use erlguten from an Erlang program.
 
+   Note: The main module 'erlguten.erl' was intended as a batch interface,
+   using xml files as input (see test/test1.xml), but it never reached a stable
+   state and is not fit for use. The shell wrapper script 'erlguten' expects to
+   use this interface, but doesn't in fact work. Contributions are welcome.
