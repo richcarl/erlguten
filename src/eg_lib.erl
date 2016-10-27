@@ -44,7 +44,10 @@ find_files(Dir, Re, Flag) ->
 
 find_files(Dir, Reg, Recursive, Fun, Acc) ->
     case file:list_dir(Dir) of
-	{ok, Files} -> find_files(Files, Dir, Reg, Recursive, Fun, Acc);
+	{ok, Files} ->
+            %% sort files of directory to make result stable; otherwise it
+            %% depends on the file system and can vary between machines
+            find_files(lists:sort(Files), Dir, Reg, Recursive, Fun, Acc);
 	{error, _}  -> Acc
     end.
 
